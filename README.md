@@ -2,6 +2,11 @@
 # Playtime with configuration: from bash to galaxy
 
 ## Abstract
-In the Linux world, there is many ways that you can setup and configure your systems.  There is at least 10 configuration orchestration tools out there.  To name a few: ansible, cfengine, pupper, chef, salt and many others.
-When I first started learning Linux, I did  my configuration with bash scripts + ssh.  Then I move up to cfengine, and did some puppet.  Finally, I ended up playing with ansible.
-This is my ansible journey, from bash, ad-hoc to roles and galaxy. 
+In the Linux world, there are many ways that you can setup and configure your systems.  There are at least 10 configuration orchestration tools out there.  To name a few: ansible, cfengine, pupper, chef, salt and many others.  
+
+When I first started learning Linux, I did  my configuration with bash scripts + ssh.  Then I crank up to cfengine, and try out  puppet master.  Finally, I ended up playing with ansible and living with it since then.  
+
+In this 20-30 minutes talk, I will share my ansible journey, from shell to galaxy.  
+
+## More info
+Here is a placeholder for the shell scripts, ansible playbooks/roles and Vagrantfile that I used in my talk.  
