@@ -1,5 +1,5 @@
 # lca2022-ansible
-# Playtime with configuration: from bash to galaxy
+# Playtime with configuration: from shell to galaxy
 
 ## Abstract
 In the Linux world, there are many ways that you can setup and configure your systems.  There are at least 10 configuration orchestration tools out there.  To name a few: ansible, cfengine, pupper, chef, salt and many others.  
