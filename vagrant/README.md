@@ -11,7 +11,7 @@ You will require to have:
 ## VMs
 Some of the VMs created with the `Vagrantfile`:
 1. Main Centos GUI (cent7gui)
-1. CentOS 5 (centos5)
+~~1. CentOS 5 (centos5)~~
 1. CentOS 6 (centos6)
 1. CentOS 7 (centos7)
 1. CentOS 8 AWX (awx)

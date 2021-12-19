@@ -46,15 +46,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	  vb.memory = 64
     end
   end
-  config.vm.define "centos5" do |centos5|
-    centos5.vm.box = "bento/centos-5"
-    centos5.vm.hostname = "centos5"
-    centos5.vm.network :private_network, ip: "192.168.56.103"
-	centos5.vm.provider "virtualbox" do |vb|
-	  vb.gui = false
-	  vb.memory = 64
-    end
-  end
   config.vm.define "centos6" do |centos6|
     centos6.vm.box = "generic/centos6"
     centos6.vm.hostname = "centos6"
