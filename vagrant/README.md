@@ -1,10 +1,23 @@
 # This is the placeholder for my test VMs
-I am going tp use Vagrant (Vagrantfile) to setup multiple VMs:
-1. Main Centos GUI
-2. Main Ubuntu GUI (maybe)
-3. CentOS 5 (possible?)
-3. CentOS 6
-4. CentOS 7
-5. Rocky 8
-6. Ubuntu sever
-7. Debian
+
+## Pre-requisite
+You will require to have:
+1. [virtualbox](https://www.virtualbox.org/wiki/Downloads)
+1. [vagrant](https://www.vagrantup.com/downloads)
+1. SSH client:
+  - For Windows: [putty](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)/[mobaxterm](https://mobaxterm.mobatek.net/download.html) or other ssh client tools
+  - For Linux: Most of the modern Linux Distro have `openssh-client` installed by default, which you can use `ssh` command   
+ 
+## VMs
+Some of the VMs created with the `Vagrantfile`:
+1. Main Centos GUI (cent7gui)
+1. CentOS 5 (centos5)
+1. CentOS 6 (centos6)
+1. CentOS 7 (centos7)
+1. CentOS 8 AWX (awx)
+1. Ubuntu webserver (web01)
+1. Centos 7 webserver (web02)
+
+
+## Basic setup
+After **VirtualBox** and **Vagrant** installation, you will just need to run `vagrant up` in the `vagrant` directory and the relevant VMs should be setup.
