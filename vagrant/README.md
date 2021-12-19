@@ -19,5 +19,9 @@ Some of the VMs created with the `Vagrantfile`:
 1. Centos 7 webserver (web02)
 
 
-## Basic setup
+## Basic instructions
+### Setup
 After **VirtualBox** and **Vagrant** installation, you will just need to run `vagrant up` in the `vagrant` directory and the relevant VMs should be setup.
+
+### Clean up
+To clean up the VMs, run `vagrant destroy -f`.
