@@ -1,0 +1,106 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.define "cent7gui" do |cent7gui|
+    #  name for VM
+    cent7gui.vm.hostname = "centos7-gui"
+    cent7gui.vm.network :private_network, ip: "192.168.56.100"
+    cent7gui.vm.box = "centos/7"
+    cent7gui.vm.provider "virtualbox" do |vb|
+      # Display the VirtualBox GUI when booting the machine
+      vb.gui = true
+      # Customize the amount of memory on the VM:
+      vb.memory = 1024
+    end
+    # simple configure
+    cent7gui.vm.provision "shell", inline: <<-SHELL
+    yum -y install epel-release
+    yum -y group install "@gnome-desktop" "@x11"
+    yum -y update
+    yum -y autoremove
+    yum -y clean all
+	systemctl set-default graphical.target
+	reboot
+  SHELL
+  end
+  
+  config.vm.define "web01" do |web01|
+    web01.vm.box = "ubuntu/trusty64"
+    web01.vm.hostname = "web01"
+    web01.vm.network :private_network, ip: "192.168.56.101"
+	web01.vm.provider "virtualbox" do |vb|
+	  vb.gui = false
+	  vb.memory = 64
+    end
+  end
+
+  config.vm.define "web02" do |web02|
+    web02.vm.box = "centos/7"
+    web02.vm.hostname = "web02"
+    web02.vm.network :private_network, ip: "192.168.56.102"
+	web02.vm.provider "virtualbox" do |vb|
+	  vb.gui = false
+	  vb.memory = 64
+    end
+  end
+  config.vm.define "centos5" do |centos5|
+    centos5.vm.box = "bento/centos-5"
+    centos5.vm.hostname = "centos5"
+    centos5.vm.network :private_network, ip: "192.168.56.103"
+	centos5.vm.provider "virtualbox" do |vb|
+	  vb.gui = false
+	  vb.memory = 64
+    end
+  end
+  config.vm.define "centos6" do |centos6|
+    centos6.vm.box = "generic/centos6"
+    centos6.vm.hostname = "centos6"
+    centos6.vm.network :private_network, ip: "192.168.56.104"
+	centos6.provider "virtualbox" do |vb|
+	  vb.gui = false
+	  vb.memory = 64
+    end
+  end
+  config.vm.define "centos7" do |centos7|
+    centos7.vm.box = "centos/7"
+    centos7.vm.hostname = "centos7"
+    centos7.vm.network :private_network, ip: "192.168.56.105"
+	centos7.vm.provider "virtualbox" do |vb|
+	  vb.gui = false
+	  vb.memory = 64
+	end
+  end
+  config.vm.define "awx" do |awx|
+    awx.vm.box = "centos/8"
+    awx.vm.hostname = "awx"
+    awx.vm.network :private_network, ip: "192.168.56.105"
+	awx.vm.provider "virtualbox" do |vb|
+	  vb.gui = false
+	  vb.cpus = 2
+	  vb.memory = 4192
+	end
+	awx.vm.provision "shell", inline: <<-SHELL
+	dnf -y install epel-release
+	dnf -y install git gcc gcc-c++ ansible nodejs gettext device-mapper-persistent-data lvm2 bzip2 python3-pip wget nano libseccomp
+	dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+	dnf -y install docker-ce
+	alternatives --set python /usr/bin/python3
+	systemctl enable docker
+	systemctl start docker
+	pip3 install setuptools_rust
+    pip3 install wheel
+    pip3 install docker-compose
+	pip3 install awxkit
+	git clone -b 17.1.0 https://github.com/ansible/awx.git
+	cd awx/installer
+	ansible-playbook -i inventory install.yml
+	dnf -y update
+	reboot
+  SHELL
+  end
+end
+
+
