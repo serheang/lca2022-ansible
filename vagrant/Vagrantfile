@@ -8,7 +8,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provider "virtualbox" do |vb|
 	  vb.gui = false
 	  vb.cpus = 1
-	  vb.memory = 64
+	  vb.memory = 256
   end
   config.vm.define "cent7gui", primary: true do |cent7gui|
     #  name for VM
@@ -32,18 +32,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   SHELL
   end
   
-  config.vm.define "web01" do |web01|
-    web01.vm.box = "ubuntu/bionic64"
-    web01.vm.hostname = "web01"
-    web01.vm.network :private_network, ip: "192.168.56.101"
-  end
-
-  config.vm.define "web02" do |web02|
-    web02.vm.box = "centos/7"
-    web02.vm.hostname = "web02"
-    web02.vm.network :private_network, ip: "192.168.56.102"
-  end
-
   config.vm.define "centos6" do |centos6|
     centos6.vm.box = "generic/centos6"
     centos6.vm.hostname = "centos6"
@@ -63,31 +51,27 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.define "awx" do |awx|
-    awx.vm.box = "centos/8"
-    awx.vm.hostname = "awx"
-    awx.vm.network :private_network, ip: "192.168.56.105"
-	awx.vm.provider "virtualbox" do |vb|
-	  vb.gui = false
-	  vb.cpus = 2
-	  vb.memory = 4192
-	end
-	awx.vm.provision "shell", inline: <<-SHELL
-	dnf -y install epel-release
-	dnf -y install git gcc gcc-c++ ansible nodejs gettext device-mapper-persistent-data lvm2 bzip2 python3-pip wget nano libseccomp
-	dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
-	dnf -y install docker-ce
-	alternatives --set python /usr/bin/python3
-	systemctl enable docker
-	systemctl start docker
-	pip3 install setuptools_rust
-    pip3 install wheel
-    pip3 install docker-compose
-	pip3 install awxkit
-	git clone -b 17.1.0 https://github.com/ansible/awx.git
-	cd awx/installer
-	ansible-playbook -i inventory install.yml
-	dnf -y update
-	reboot
-  SHELL
+      awx.vm.box = "centos/8"
+      awx.vm.hostname = "awx"
+      awx.vm.network :private_network, ip: "192.168.56.105"
+	  
+	  awx.vm.provision "shell", inline: <<-SHELL
+	  dnf -y install epel-release
+	  dnf -y install git gcc gcc-c++ ansible nodejs gettext device-mapper-persistent-data lvm2 bzip2 python3-pip wget nano libseccomp
+	  dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+	  dnf -y install docker-ce
+	  alternatives --set python /usr/bin/python3
+	  systemctl enable docker
+	  systemctl start docker
+	  pip3 install setuptools_rust
+      pip3 install wheel
+      pip3 install docker-compose
+	  pip3 install awxkit
+	  git clone -b 17.1.0 https://github.com/ansible/awx.git
+	  cd awx/installer
+	  ansible-playbook -i inventory install.yml
+	  dnf -y update
+	  reboot
+    SHELL
   end
 end
