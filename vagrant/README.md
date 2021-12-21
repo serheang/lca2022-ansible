@@ -10,18 +10,19 @@ You will require to have:
  
 ## VMs
 Some of the VMs created with the `Vagrantfile`:
-1. Main Centos GUI (cent7gui)
+1. Centos GUI (cent7gui) - This is the main Linux for managing various tasks
 ~~1. CentOS 5 (centos5)~~
 1. CentOS 6 (centos6)
 1. CentOS 7 (centos7)
-1. CentOS 8 AWX (awx)
-1. Ubuntu webserver (web01)
-1. Centos 7 webserver (web02)
+1. Ubuntu (ubuntu)
+1. CentOS 8 AWX (awx) - AWX server?
 
 
 ## Basic instructions
 ### Setup
 After **VirtualBox** and **Vagrant** installation, you will just need to run `vagrant up` in the `vagrant` directory and the relevant VMs should be setup.
+
+> If your host have low memory (<8GB), you might need to bring up only cent7gui: `vagrant up cent7gui`, and maybe just 1 of the other Distro, example CentOS7: `vagrant up centos7` or Ubuntu: `vagrant up ubuntu`.
 
 ### Clean up
 To clean up the VMs, run `vagrant destroy -f`.
