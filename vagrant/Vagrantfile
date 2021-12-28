@@ -50,11 +50,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ubuntu.vm.network :private_network, ip: "192.168.56.105"
   end
 
-  config.vm.define "awx" do |awx|
+  config.vm.define "awx", autostart: false do |awx|
       awx.vm.box = "centos/8"
       awx.vm.hostname = "awx"
       awx.vm.network :private_network, ip: "192.168.56.105"
-	  
+	  awx.vm.provider "virtualbox" do |vb|
+        # Customize the amount of memory on the VM:
+        vb.memory = 2048
+	  end
 	  awx.vm.provision "shell", inline: <<-SHELL
 	  dnf -y install epel-release
 	  dnf -y install git gcc gcc-c++ ansible nodejs gettext device-mapper-persistent-data lvm2 bzip2 python3-pip wget nano libseccomp
