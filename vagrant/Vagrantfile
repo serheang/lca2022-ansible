@@ -9,11 +9,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	  vb.gui = false
 	  vb.cpus = 1
 	  vb.memory = 256
+	  # create a master VM before creating the linked clones
+      vb.linked_clone = true
   end
   config.vm.define "cent7gui", primary: true do |cent7gui|
     #  name for VM
     cent7gui.vm.hostname = "centos7-gui"
-    cent7gui.vm.network :private_network, ip: "192.168.56.100"
+    cent7gui.vm.network "private_network", ip: "192.168.56.100"
     cent7gui.vm.box = "centos/7"
 	cent7gui.vm.boot_timeout = 180
     cent7gui.vm.provider "virtualbox" do |vb|
@@ -21,60 +23,87 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.gui = true
       # Customize the amount of memory on the VM:
       vb.memory = 512
+	  # vm name
+	  vb.name = "centos7-gui"
     end
+	# hosts
+	cent7gui.vm.provision "file", source: "localhosts", destination: "/var/tmp/hosts"
+	cent7gui.vm.provision "shell", inline: <<-HOST
+	  mv /etc/hosts /etc/hosts.bak
+	  mv /var/tmp/hosts /etc/hosts
+	HOST
     # simple configure
     cent7gui.vm.provision "shell", inline: <<-SHELL
-    yum -y group install "@gnome-desktop" "@x11"
-    yum -y autoremove
-    yum -y clean all
-	systemctl set-default graphical.target
-	reboot
-  SHELL
+      yum -y group install "@gnome-desktop" "@x11"
+	  yum -y autoremove firstboot
+      yum -y autoremove
+      yum -y clean all
+	  systemctl set-default graphical.target
+	  reboot
+    SHELL
   end
   
   config.vm.define "centos6" do |centos6|
     centos6.vm.box = "generic/centos6"
     centos6.vm.hostname = "centos6"
-    centos6.vm.network :private_network, ip: "192.168.56.104"
+    centos6.vm.network "private_network", ip: "192.168.56.104"
+	centos6.vm.provider "virtualbox" do |vb|
+	  # vm name
+	  vb.name = "centos6-web"
+	end
   end
   
   config.vm.define "centos7" do |centos7|
     centos7.vm.box = "centos/7"
     centos7.vm.hostname = "centos7"
-    centos7.vm.network :private_network, ip: "192.168.56.105"
+    centos7.vm.network "private_network", ip: "192.168.56.105"
+	centos7.vm.provider "virtualbox" do |vb|
+	  # vm name
+	  vb.name = "centos7-web"
+	end
   end
 
   config.vm.define "ubuntu" do |ubuntu|
     ubuntu.vm.box = "ubuntu/bionic64"
     ubuntu.vm.hostname = "ubuntu"
-    ubuntu.vm.network :private_network, ip: "192.168.56.105"
+    ubuntu.vm.network "private_network", ip: "192.168.56.106"
+	ubuntu.vm.provider "virtualbox" do |vb|
+	  # vm name
+	  vb.name = "ubuntu-web"
+	end
   end
 
   config.vm.define "awx", autostart: false do |awx|
-      awx.vm.box = "centos/8"
+      awx.vm.box = "centos/7"
       awx.vm.hostname = "awx"
-      awx.vm.network :private_network, ip: "192.168.56.105"
+      awx.vm.network "private_network", ip: "192.168.56.107"
 	  awx.vm.provider "virtualbox" do |vb|
         # Customize the amount of memory on the VM:
         vb.memory = 2048
+	    # vm name
+    	vb.name = "centos7-awx"
 	  end
 	  awx.vm.provision "shell", inline: <<-SHELL
-	  dnf -y install epel-release
-	  dnf -y install git gcc gcc-c++ ansible nodejs gettext device-mapper-persistent-data lvm2 bzip2 python3-pip wget nano libseccomp
-	  dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
-	  dnf -y install docker-ce
+	  yum -y install epel-release
+	  yum -y remove python-docker-py
+#	  yum -y install git gcc gcc-c++ ansible nodejs gettext device-mapper-persistent-data lvm2 bzip2 python3-pip wget nano libseccomp
+      yum install -y yum-utils device-mapper-persistent-data lvm2 ansible git python-devel python-pip python-docker-py vim-enhanced
+	  yum config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+	  yum -y install docker-ce
 	  alternatives --set python /usr/bin/python3
 	  systemctl enable docker
 	  systemctl start docker
-	  pip3 install setuptools_rust
+	  pip3 install cryptography
+	  pip3 install jsonschema
+#	  pip3 install setuptools_rust
       pip3 install wheel
       pip3 install docker-compose
-	  pip3 install awxkit
+#	  pip3 install awxkit
 	  git clone -b 17.1.0 https://github.com/ansible/awx.git
 	  cd awx/installer
 	  ansible-playbook -i inventory install.yml
-	  dnf -y update
-	  reboot
+#	  yum -y update
+#	  reboot
     SHELL
   end
 end
