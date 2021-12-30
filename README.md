@@ -1,5 +1,4 @@
-# lca2022-ansible
-# Playtime with configuration: from shell to galaxy
+# Playtime with configuration: from shell to galaxy - LCA2022
 
 ##  Acknowledgement to the Country
 I would like to acknowledgement the Traditional Custodians of the land on which this talk is recorded and streaming from.  I would also like to pay my respect to their Elders past and present.
