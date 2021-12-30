@@ -1,0 +1,67 @@
+---
+- hosts: "{{ hostgrp | default('all') }}"
+  gather_facts: true
+  become: yes
+  tasks:
+    - name: Setup for CentOS
+      when:
+        - ansible_distribution == "CentOS"
+      block:
+        - name: Enable EPEL
+          yum: "name=epel-release state=latest"
+        - name: Install necessary packages
+          yum:
+            name: "{{ item }}"
+            state: present
+          with_items:
+            - git 
+            - tig 
+            - python-pip
+            - ansible
+        - name: YUM Update 
+          yum:
+            name: '*'
+            state: latest
+        - name: Set sudo group fact
+          set_fact:
+            sudo_group: wheel
+
+    - name: Setup for Ubuntu
+      when:
+        - ansible_distribution == "Ubuntu"
+      block:
+        - name: Install aptitude
+          apt: 
+            name: "aptitude"
+            state: latest
+        - name: APT Update
+          apt:
+            name: "*"
+            state: latest
+        - name: Set sudo group fact
+          set_fact:
+            sudo_group: admin
+    - name: Install Ansible
+      package:
+        name: ansible
+        state: latest
+    - name: Create local account with sudo access
+      user:
+        name: toor
+        comment: "Local Admin"
+        password: '!'
+        groups: "{{ sudo_group }}"
+        append: yes
+        shell: /bin/bash
+        state: present
+    - name: Set authorized keys for "toor"
+      authorized_key:
+        user: toor
+        state: present
+        key: "{{ lookup('file', './id_rsa.pub') }}"
+    - name: Enable nopassword for "{{ sudo_group }}"
+      lineinfile:
+        path: /etc/sudoers
+        regexp: "^%{{ sudo_group }}"
+        validate: 'visudo -cf %s'
+        line: "%{{ sudo_group }}    ALL=(ALL) NOPASSWD: ALL"
