@@ -20,9 +20,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.keys_only = false
   config.ssh.private_key_path = ["vagrant-rsa", "~/.vagrant.d/insecure_private_key"]
   config.vm.provision "file", source: "vagrant-rsa.pub", destination: "~/.ssh/authorized_keys"
+  config.vm.provision "file", source: "vagrant-rsa", destination: "~/.ssh/id_rsa"
   config.vm.provision "file", source: "ssh-config", destination: "~/.ssh/config"
   config.vm.provision "shell", inline: <<-SHELL
-    chmod 600 ~vagrant/.ssh/config
+    chmod 600 ~vagrant/.ssh/config ~vagrant/.ssh/id_rsa
 	# Enable Password login for sshd
 	sed -i.bak 's/^PasswordAuthentication\ no/PasswordAuthentication\ yes/' /etc/ssh/sshd_config
 	service sshd restart
@@ -30,7 +31,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   
   config.vm.define "cent7gui", primary: true do |cent7gui|
     #  name for VM
-    cent7gui.vm.hostname = "centos7-gui"
+    cent7gui.vm.hostname = "centos7-mgt"
     cent7gui.vm.network "private_network", ip: "192.168.56.100"
     cent7gui.vm.box = "centos/7"
 	cent7gui.vm.boot_timeout = 180
@@ -42,7 +43,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       # Customize the amount of memory on the VM:
       vb.memory = 512
 	  # vm name
-	  vb.name = "centos7-gui"
+	  vb.name = "centos7-mgt"
     end
 	# hosts
 	cent7gui.vm.provision "file", source: "localhosts", destination: "/var/tmp/hosts"
@@ -52,9 +53,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	HOST
     # simple configure
     cent7gui.vm.provision "shell", inline: <<-SHELL
-      yum -y autoremove firstboot gnome-initial-setup
-      yum -y autoremove
-      yum -y clean all
+      yum makecache
+	  yum -y install git
+	  git clone https://github.com/serheang/lca2022-ansible
 	SHELL
   end
   
@@ -66,6 +67,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	  # vm name
 	  vb.name = "centos6-web"
 	end
+    centos6.vm.provision "file", source: "mariadb.repo", destination: "/var/tmp/mariadb.repo"
+	centos6.vm.provision "shell", inline: <<-SHELL
+	  mv /var/tmp/mariadb.repo /etc/yum.repos.d/
+	  yum makecache
+	SHELL
   end
   
   config.vm.define "centos7" do |centos7|
@@ -76,6 +82,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	  # vm name
 	  vb.name = "centos7-web"
 	end
+    centos7.vm.provision "shell", inline: <<-SHELL
+      yum makecache
+	SHELL
   end
 
   config.vm.define "ubuntu" do |ubuntu|
@@ -86,6 +95,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	  # vm name
 	  vb.name = "ubuntu-web"
 	end
+	ubuntu.vm.provision "shell", inline: <<-SHELL
+	  apt -y update
+	SHELL
   end
 
   config.vm.define "awx", autostart: false do |awx|
