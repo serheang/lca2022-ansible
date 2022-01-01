@@ -67,7 +67,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	  # vm name
 	  vb.name = "centos6-web"
 	end
-    centos6.vm.provision "file", source: "mariadb.repo", destination: "/var/tmp/mariadb.repo"
+    centos6.vm.provision "file", source: "centos6-mariadb.repo", destination: "/var/tmp/mariadb.repo"
 	centos6.vm.provision "shell", inline: <<-SHELL
 	  mv /var/tmp/mariadb.repo /etc/yum.repos.d/
 	  yum makecache
@@ -82,7 +82,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	  # vm name
 	  vb.name = "centos7-web"
 	end
-    centos7.vm.provision "shell", inline: <<-SHELL
+	centos7.vm.provision "file", source: "centos7-mariadb.repo", destination: "/var/tmp/mariadb.repo"
+	centos7.vm.provision "shell", inline: <<-SHELL
+      mv /var/tmp/mariadb.repo /etc/yum.repos.d/
       yum makecache
 	SHELL
   end
