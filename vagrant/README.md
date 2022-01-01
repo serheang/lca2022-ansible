@@ -26,3 +26,13 @@ After **VirtualBox** and **Vagrant** installation, you will just need to run `va
 
 ### Clean up
 To clean up the VMs, run `vagrant destroy -f`.
+
+
+## **WARNING**
+Please do not reuse the `vagrant-rsa` ssh-rsa private keypairs in this directory.  This private keypairs is only used for demonstration purpose and deemed to be unsecure!  
+
+You can generate your own ssh-rsa keypairs (**PLEASE ENSURE TO SECURE WITH PASSPHRASE**):
+```
+ssh-keygen -t rsa
+```
+
