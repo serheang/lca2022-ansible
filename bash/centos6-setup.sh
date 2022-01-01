@@ -1,23 +1,22 @@
 #!/bin/bash
-## This work for ubuntu
+## This work for centos7
+## Setup EPEL repo
+yum -y install epel-release
 
 ## Install git
-apt -y install git 
+yum -y install git
 
 ## Remove telnet
-apt -y remove telnet
-
-## Update apt cache
-apt -y update
+yum -y remove telnet
 
 ## Install LAMP
-apt -y install apache2 mariadb-server php libapache2-mod-php php-mysql 
+yum -y install httpd MariaDB-server php php-mysql
 
 ## Enable and start httpd service
-systemctl enable httpd; systemctl start httpd
+chkconfig --add httpd; service httpd restart
 
 ## Enable and start mariadb service
-systemctl enable mariadb; systemctl start mariadb
+chkconfig --add mysqld; service mysqld restart
 
 ## Create a sample landing page
 cat >/var/www/html/index.html<<EOF
@@ -29,7 +28,6 @@ Welcome to LCA2022!
 </body>
 </html>
 EOF
-
 
 ## Create a simple php info page
 cat >/var/www/html/info.php<<EOF
