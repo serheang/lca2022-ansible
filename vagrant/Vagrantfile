@@ -11,7 +11,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	  vb.memory = 256
 	  # create a master VM before creating the linked clones
       vb.linked_clone = true
+	  # Only use 50% of host CPU
+	  vb.customize ["modifyvm", :id, "--cpuexecutioncap", "50"]
   end
+  # Configure my own vagrant ssh key
+  ## Generate ssh rsa key: `ssh-keygen -f vagrant-rsa -t rsa -C "vagrant"`
+  config.ssh.insert_key = false
+  config.ssh.keys_only = false
+  config.ssh.private_key_path = ["vagrant-rsa", "~/.vagrant.d/insecure_private_key"]
+  config.vm.provision "file", source: "vagrant-rsa.pub", destination: "~/.ssh/authorized_keys"
+  
   config.vm.define "cent7gui", primary: true do |cent7gui|
     #  name for VM
     cent7gui.vm.hostname = "centos7-gui"
@@ -19,8 +28,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     cent7gui.vm.box = "centos/7"
 	cent7gui.vm.boot_timeout = 180
     cent7gui.vm.provider "virtualbox" do |vb|
+	  # 2 x vCPU
+	  vb.cpus = 2
       # Display the VirtualBox GUI when booting the machine
-      vb.gui = true
+      #vb.gui = true
       # Customize the amount of memory on the VM:
       vb.memory = 512
 	  # vm name
@@ -34,8 +45,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	HOST
     # simple configure
     cent7gui.vm.provision "shell", inline: <<-SHELL
-      yum -y group install "@gnome-desktop" "@x11"
-	  yum -y autoremove firstboot
+      #yum -y group install "@gnome-desktop" "@x11"
+	  yum -y autoremove firstboot gnome-initial-setup
       yum -y autoremove
       yum -y clean all
 	  systemctl set-default graphical.target
@@ -44,7 +55,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
   
   config.vm.define "centos6" do |centos6|
-    centos6.vm.box = "generic/centos6"
+    centos6.vm.box = "bento/centos-6"
     centos6.vm.hostname = "centos6"
     centos6.vm.network "private_network", ip: "192.168.56.104"
 	centos6.vm.provider "virtualbox" do |vb|
@@ -78,32 +89,40 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       awx.vm.hostname = "awx"
       awx.vm.network "private_network", ip: "192.168.56.107"
 	  awx.vm.provider "virtualbox" do |vb|
+	  	# 2 x vCPU
+	    vb.cpus = 2
         # Customize the amount of memory on the VM:
-        vb.memory = 2048
+        vb.memory = 4096
 	    # vm name
     	vb.name = "centos7-awx"
 	  end
+	  awx.vm.provision "file", source: "inventory", destination: "/var/tmp/"
 	  awx.vm.provision "shell", inline: <<-SHELL
+	  # Official steps: https://github.com/ansible/awx/blob/17.0.1/INSTALL.md
+	  # The below steps are from https://howto.lintel.in/install-ansible-tower-awx-centos-7/
+	  ## Install dependencies
 	  yum -y install epel-release
-	  yum -y remove python-docker-py
-#	  yum -y install git gcc gcc-c++ ansible nodejs gettext device-mapper-persistent-data lvm2 bzip2 python3-pip wget nano libseccomp
-      yum install -y yum-utils device-mapper-persistent-data lvm2 ansible git python-devel python-pip python-docker-py vim-enhanced
-	  yum config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+	  yum remove python-docker-py
+ 	  ## Some extra python3 packages
+	  yum -y install python3 libselinux-python3
+	  yum install -y yum-utils device-mapper-persistent-data lvm2 ansible git python3-devel python3-pip python3-docker-py
+	  pip3 install cryptography
+      pip3 install jsonschema
+      pip3 install docker-compose~=1.23.0
+      pip3 install docker --upgrade
+	  ## Do a softlink for docker-compose
+	  ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+	  ## Install Docker
+	  yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
 	  yum -y install docker-ce
-	  alternatives --set python /usr/bin/python3
 	  systemctl enable docker
 	  systemctl start docker
-	  pip3 install cryptography
-	  pip3 install jsonschema
-#	  pip3 install setuptools_rust
-      pip3 install wheel
-      pip3 install docker-compose
-#	  pip3 install awxkit
-	  git clone -b 17.1.0 https://github.com/ansible/awx.git
+      ## Deploy AWX
+	  git clone https://github.com/ansible/awx.git
 	  cd awx/installer
-	  ansible-playbook -i inventory install.yml
-#	  yum -y update
-#	  reboot
+	  git checkout -b 17.1.0
+	  cp /var/tmp/inventory .
+	  sudo ansible-playbook -i inventory install.yml
     SHELL
   end
 end
