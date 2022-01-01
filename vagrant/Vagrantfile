@@ -45,12 +45,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	HOST
     # simple configure
     cent7gui.vm.provision "shell", inline: <<-SHELL
-      #yum -y group install "@gnome-desktop" "@x11"
-	  yum -y autoremove firstboot gnome-initial-setup
+      yum -y autoremove firstboot gnome-initial-setup
       yum -y autoremove
       yum -y clean all
-	  systemctl set-default graphical.target
-	  reboot
+	  # Enable Password login for sshd
+	  sed -i.bak 's/^PasswordAuthentication\ no/PasswordAuthentication\ yes/' /etc/ssh/sshd_config
     SHELL
   end
   
@@ -62,6 +61,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	  # vm name
 	  vb.name = "centos6-web"
 	end
+	centos6.vm.provision "shell", inline: <<-SHELL
+	  # Enable Password login for sshd
+	  sed -i.bak 's/^PasswordAuthentication\ no/PasswordAuthentication\ yes/' /etc/ssh/sshd_config
+	  service sshd restart
+    SHELL
   end
   
   config.vm.define "centos7" do |centos7|
@@ -72,6 +76,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	  # vm name
 	  vb.name = "centos7-web"
 	end
+	centos7.vm.provision "shell", inline: <<-SHELL
+	  # Enable Password login for sshd
+	  sed -i.bak 's/^PasswordAuthentication\ no/PasswordAuthentication\ yes/' /etc/ssh/sshd_config
+	  systemctl restart sshd
+    SHELL
   end
 
   config.vm.define "ubuntu" do |ubuntu|
@@ -82,6 +91,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	  # vm name
 	  vb.name = "ubuntu-web"
 	end
+	ubuntu.vm.provision "shell", inline: <<-SHELL
+	  # Enable Password login for sshd
+	  sed -i.bak 's/^PasswordAuthentication\ no/PasswordAuthentication\ yes/' /etc/ssh/sshd_config
+	  systemctl restart sshd
+    SHELL
   end
 
   config.vm.define "awx", autostart: false do |awx|
@@ -98,6 +112,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	  end
 	  awx.vm.provision "file", source: "inventory", destination: "/var/tmp/"
 	  awx.vm.provision "shell", inline: <<-SHELL
+  	  # Enable Password login for sshd
+	  sed -i.bak 's/^PasswordAuthentication\ no/PasswordAuthentication\ yes/' /etc/ssh/sshd_config
+	  systemctl restart sshd
 	  # Official steps: https://github.com/ansible/awx/blob/17.0.1/INSTALL.md
 	  # The below steps are from https://howto.lintel.in/install-ansible-tower-awx-centos-7/
 	  ## Install dependencies
@@ -118,7 +135,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	  systemctl enable docker
 	  systemctl start docker
       ## Deploy AWX
-	  git clone https://github.com/ansible/awx.git
+	  git clone -b 17.1.0 https://github.com/ansible/awx.git
 	  cd awx/installer
 	  git checkout -b 17.1.0
 	  cp /var/tmp/inventory .
