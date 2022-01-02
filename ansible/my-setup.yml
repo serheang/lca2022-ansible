@@ -14,14 +14,14 @@
             - ansible_distribution_major_version == "6"
           yum:
             name: https://dev.mysql.com/get/mysql80-community-release-el6-4.noarch.rpm
-            state: installed
+            state: present
             update_cache: yes
         - name: Setup MySQL repo - CentOS 7
           when:
             - ansible_distribution_major_version == "7"
           yum:
             name: https://dev.mysql.com/get/mysql80-community-release-el7-4.noarch.rpm
-            state: installed
+            state: present
             update_cache: yes
 
     - name: Setup for Ubuntu
@@ -40,14 +40,14 @@
     - name: Install python3
       package:
         name: python3
-        state: installed
+        state: present
     - name: Install MySQL server and PHP
       package:
         name: 
           - mysql-server
           - php
           - php-mysql
-        state: installed
+        state: present
       notify:
         - Enable mysql
     - name: Install LAMP - CentOS
@@ -58,7 +58,7 @@
           yum:
             name:
               - httpd
-            state: installed
+            state: present
             update_cache: yes
         - name: Enable and start httpd
           service:
@@ -80,7 +80,7 @@
             name:
               - apache2
               - libapache2-mod-php
-            state: installed
+            state: present
             update_cache: yes
         - name: Enable and start apache2
           service:
