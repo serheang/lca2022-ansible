@@ -28,6 +28,7 @@
             name:
               - libselinux-python
             state: installed
+            update_cache: yes
 
     - name: Setup for Ubuntu
       when:
