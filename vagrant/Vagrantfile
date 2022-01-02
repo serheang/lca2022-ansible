@@ -109,7 +109,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	end
   end
 
-  config.vm.define "ubuntu21" do |ubuntu21|
+  config.vm.define "ubuntu21", autostart: false do |ubuntu21|
     ubuntu21.vm.box = "ubuntu/hirsute64"
     ubuntu21.vm.hostname = "ubuntu21"
     ubuntu21.vm.network "private_network", ip: "192.168.56.108"
