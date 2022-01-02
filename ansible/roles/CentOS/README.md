@@ -32,7 +32,7 @@ Including an example of how to use your role (for instance, with variables passe
 License
 -------
 
-CC BY-NC-SA 4.0
+CC-BY-SA 4.0
 
 Author Information
 ------------------
