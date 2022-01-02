@@ -32,7 +32,8 @@
           apt: 
             name: "aptitude"
             state: latest
-            
+            update_cache: yes
+
     - name: Install ansible
       package:
         name: ansible
