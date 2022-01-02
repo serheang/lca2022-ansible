@@ -9,22 +9,20 @@
       block:
         - name: Enable EPEL
           yum: "name=epel-release state=latest"
-        - name: Install necessary packages
+        - name: Setup MySQL repo - CentOS 6
+          when:
+            - ansible_distribution_major_version == "6"
           yum:
-            name: "{{ item }}"
-            state: present
-          with_items:
-            - git 
-            - tig 
-            - python-pip
-            - ansible
-        - name: YUM Update 
+            name: https://dev.mysql.com/get/mysql80-community-release-el6-4.noarch.rpm
+            state: installed
+            update_cache: yes
+        - name: Setup MySQL repo - CentOS 7
+          when:
+            - ansible_distribution_major_version == "7"
           yum:
-            name: '*'
-            state: latest
-        - name: Set sudo group fact
-          set_fact:
-            sudo_group: wheel
+            name: https://dev.mysql.com/get/mysql80-community-release-el7-4.noarch.rpm
+            state: installed
+            update_cache: yes
 
     - name: Setup for Ubuntu
       when:
@@ -34,34 +32,84 @@
           apt: 
             name: "aptitude"
             state: latest
-        - name: APT Update
-          apt:
-            name: "*"
-            state: latest
-        - name: Set sudo group fact
-          set_fact:
-            sudo_group: admin
-    - name: Install Ansible
+            
+    - name: Install ansible
       package:
         name: ansible
-        state: latest
-    - name: Create local account with sudo access
-      user:
-        name: toor
-        comment: "Local Admin"
-        password: '!'
-        groups: "{{ sudo_group }}"
-        append: yes
-        shell: /bin/bash
-        state: present
-    - name: Set authorized keys for "toor"
-      authorized_key:
-        user: toor
-        state: present
-        key: "{{ lookup('file', './id_rsa.pub') }}"
-    - name: Enable nopassword for "{{ sudo_group }}"
-      lineinfile:
-        path: /etc/sudoers
-        regexp: "^%{{ sudo_group }}"
-        validate: 'visudo -cf %s'
-        line: "%{{ sudo_group }}    ALL=(ALL) NOPASSWD: ALL"
+        state: installed
+        
+    - name: Install python3
+      package:
+        name: python3
+        state: installed
+    - name: Install MySQL server and PHP
+      package:
+        name: 
+          - mysql-server
+          - php
+          - php-mysql
+        state: installed
+      notify:
+        - 
+    - name: Install LAMP - CentOS
+      when:
+        - ansible_distribution == "CentOS"
+      block:
+        - name: Install httpd
+          yum:
+            name:
+              - httpd
+            state: installed
+            update_cache: yes
+          notify:
+            - Enable and start httpd
+        
+    - name: Install LAMP - Ubuntu
+      when:
+        - ansible_distribution == "Ubuntu"
+      block:
+        - name: Install apache2
+          apt:
+            name:
+              - apache2
+              - libapache2-mod-php
+            state: installed
+            update_cache: yes
+          notify:
+            - Enable and start apache2
+    - name: Create customize index.html
+      blockinfile:
+        path: /var/www/html/index.html
+        block: |
+          <html>
+          <title>Test page for LCA2022</title>
+          <body>
+          <h1>LCA2022 - Test landing page</h1>
+          Welcome to LCA2022!
+          </body>
+          </html>
+          
+    - name: Create customize info.php
+      blockinfile:
+        path: /var/www/html/info.php
+        block: |
+          <?php phpinfo(); ?>
+      
+  handlers:
+    - name: Enable and start httpd
+      service:
+        name: httpd
+        enabled: yes
+        status: restarted
+    - name: Enable and start apache2
+      service:
+        name: apache2
+        enabled: yes
+        status: restarted
+    - name: Enable and start mysql-server
+      service:
+        name: mysqld
+        enabled: yes
+        status: started
+
+    
