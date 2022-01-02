@@ -93,6 +93,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	  # vm name
 	  vb.name = "ubuntu18-web"
 	end
+	ubuntu18.vm.provision "shell",  inline: <<-SHELL
+	  apt -y update
+	SHELL
   end
 
   config.vm.define "ubuntu20" do |ubuntu20|
@@ -100,9 +103,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ubuntu20.vm.hostname = "ubuntu20"
     ubuntu20.vm.network "private_network", ip: "192.168.56.107"
 	ubuntu20.vm.provider "virtualbox" do |vb|
+	  # Customize the amount of memory on the VM:
+      vb.memory = 512
 	  # vm name
 	  vb.name = "ubuntu20"
 	end
+    ubuntu20.vm.provision "shell",  inline: <<-SHELL
+	  apt -y update
+	SHELL
   end
 
   config.vm.define "ubuntu21", autostart: false do |ubuntu21|
@@ -113,6 +121,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	  # vm name
 	  vb.name = "ubuntu21"
 	end
+	ubuntu21.vm.provision "shell",  inline: <<-SHELL
+	  apt -y update
+	SHELL
   end  
   
   config.vm.define "awx", autostart: false do |awx|
