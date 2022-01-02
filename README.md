@@ -1,7 +1,13 @@
-# Playtime with configuration: from shell to galaxy - LCA2022
+# LCA2022 - Playtime with configuration: from shell to galaxy
 
-##  Acknowledgement to the Country
-I would like to acknowledgement the Traditional Custodians of the land on which this talk is recorded and streaming from.  I would also like to pay my respect to their Elders past and present.
+## Table of Contents
+- [Acknowledgement of the Country](#acknowledgement-of-the-country)
+- [Abstract](#abstract)
+- [whoami](#whoami)
+- [More info](#more-info]
+
+##  Acknowledgement of the Country
+I would like to acknowledgement the Traditional Custodians of the country which this talk is recorded and streaming from.  I would also like to pay my respect to their Elders past and present.
 
 ## Abstract
 In the Linux world, there are many ways that you can setup and configure your systems.  There are at least 10 configuration orchestration tools out there.  To name a few: ansible, cfengine, pupper, chef, salt and many others.  
