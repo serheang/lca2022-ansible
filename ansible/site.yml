@@ -1,0 +1,19 @@
+---
+- hosts: "{{ hostgrp | default('all') }}"
+  gather_facts: true
+  become: yes
+  tasks:
+    - name: Setup for CentOS
+      when:
+        - ansible_distribution == "CentOS"
+      block:
+        - name: CentOS
+          include_role:
+            name: CentOS
+    - name: Setup for Ubuntu
+      when:
+        - ansible_distribution == "Ubuntu"
+      block:
+        - name: Ubuntu
+          include_role:
+            name: Ubuntu
