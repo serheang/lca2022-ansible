@@ -1,22 +1,20 @@
 #!/bin/bash
 ## This work for centos7
-## Setup EPEL repo
-yum -y install epel-release
 
-## Install git
-yum -y install git
+## Install mysql-community repo
+rpm -ivh https://dev.mysql.com/get/mysql80-community-release-el7-4.noarch.rpm
 
-## Remove telnet
-yum -y remove telnet
+## Update yum cache
+yum makecache
 
 ## Install LAMP
-yum -y install httpd mariadb mariadb-server php php-mysql
+yum -y install httpd mysql-server php php-mysql
 
 ## Enable and start httpd service
 systemctl enable httpd; systemctl start httpd
 
-## Enable and start mariadb service
-systemctl enable mariadb; systemctl start mariadb
+## Enable and start mysql service
+systemctl enable mysqld
 
 ## Create a sample landing page
 cat >/var/www/html/index.html<<EOF
