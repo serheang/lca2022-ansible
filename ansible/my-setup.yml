@@ -65,12 +65,12 @@
           service:
             name: httpd
             enabled: yes
-            status: started
+            state: started
         - name: Enable and start mysql-server
           service:
             name: mysqld
             enabled: yes
-            status: started
+            state: started
         
     - name: Install LAMP - Ubuntu
       when:
@@ -87,12 +87,12 @@
           service:
             name: apache2
             enabled: yes
-            status: started
+            state: started
         - name: Enable and start mysql-server
           service:
             name: mysql
             enabled: yes
-            status: started
+            state: started
 
     - name: Create customize index.html
       blockinfile:
