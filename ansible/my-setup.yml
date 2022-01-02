@@ -23,6 +23,11 @@
             name: https://dev.mysql.com/get/mysql80-community-release-el7-4.noarch.rpm
             state: present
             update_cache: yes
+        - name: Install additional packages
+          yum:
+            name:
+              - libselinux-python
+            state: installed
 
     - name: Setup for Ubuntu
       when:
@@ -95,6 +100,7 @@
     - name: Create customize index.html
       blockinfile:
         path: /var/www/html/index.html
+        marker: <!-- {mark} index.html -->
         create: yes
         block: |
           <html>
@@ -103,13 +109,14 @@
           <h1>LCA2022 - Test landing page</h1>
           <h2>{{ ansible_hostname }}</h2>
           <p>Welcome to LCA2022!<p>
-          This is running on {{ ansible_hostname, OS: {{ ansible_distribution }}, Version: {{ ansible_distribution_major_version }}
+          This is running on {{ ansible_hostname }}, OS: {{ ansible_distribution }}, Version: {{ ansible_distribution_major_version }}
           </body>
           </html>
  
     - name: Create customize info.php
       blockinfile:
         path: /var/www/html/info.php
+        marker: <!-- {mark} info.php -->
         create: yes
         block: |
           <?php phpinfo(); ?>
