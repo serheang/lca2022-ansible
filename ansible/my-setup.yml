@@ -61,8 +61,16 @@
               - httpd
             state: installed
             update_cache: yes
-          notify:
-            - Enable and start httpd
+        - name: Enable and start httpd
+          service:
+            name: httpd
+            enabled: yes
+            state: started
+        - name: Enable and start mysql-server
+          service:
+            name: mysqld
+            enabled: yes
+            state: started
         
     - name: Install LAMP - Ubuntu
       when:
@@ -75,11 +83,21 @@
               - libapache2-mod-php
             state: installed
             update_cache: yes
-          notify:
-            - Enable and start apache2
+        - name: Enable and start apache2
+          service:
+            name: apache2
+            enabled: yes
+            state: started
+        - name: Enable and start mysql-server
+          service:
+            name: mysql
+            enabled: yes
+            state: started
+
     - name: Create customize index.html
       blockinfile:
         path: /var/www/html/index.html
+        create: yes
         block: |
           <html>
           <title>Test page for LCA2022</title>
@@ -92,33 +110,8 @@
     - name: Create customize info.php
       blockinfile:
         path: /var/www/html/info.php
+        create: yes
         block: |
           <?php phpinfo(); ?>
       
   handlers:
-    - name: Enable and start httpd
-      service:
-        name: httpd
-        enabled: yes
-        status: started
-    - name: Enable and start apache2
-      service:
-        name: apache2
-        enabled: yes
-        status: started
-    - name: Enable and start mysql-server
-      when:
-        - ansible_distribution == "CentOS"
-      listen: Enable mysql
-      service:
-        name: mysqld
-        enabled: yes
-        status: started
-    - name: Enable and start mysql-server
-      when:
-        - ansible_distribution == "Ubuntu"
-      listen: Enable mysql
-      service:
-        name: mysql
-        enabled: yes
-        status: started
