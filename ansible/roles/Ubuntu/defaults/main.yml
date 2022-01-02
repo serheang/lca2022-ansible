@@ -1,2 +1,12 @@
 ---
 # defaults file for Ubuntu
+install_pkgs:
+  - ansible
+  - python3-selinux
+
+remove_pkgs:
+  - telnetd
+  - talkd
+  - yp-tools
+  - nis
+  - portmap

@@ -1,2 +1,18 @@
 ---
 # tasks file for Ubuntu
+- name: Update apt cache
+  apt: 
+    update_cache: yes
+    cache_valid_time: 30
+- name: Install additional packages
+  apt:
+    name: "{{ install_pkgs }}"
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+- name: Remove unwanted packages
+  apt:
+    name: "{{ remove_pkgs }}"
+    state: absent
+    autoremove: yes
+    update_cache: yes
