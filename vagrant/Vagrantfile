@@ -89,23 +89,40 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	SHELL
   end
 
-  config.vm.define "ubuntu" do |ubuntu|
-    ubuntu.vm.box = "ubuntu/bionic64"
-    ubuntu.vm.hostname = "ubuntu"
-    ubuntu.vm.network "private_network", ip: "192.168.56.106"
-	ubuntu.vm.provider "virtualbox" do |vb|
+  config.vm.define "ubuntu18" do |ubuntu18|
+    ubuntu18.vm.box = "ubuntu/bionic64"
+    ubuntu18.vm.hostname = "ubuntu18"
+    ubuntu18.vm.network "private_network", ip: "192.168.56.106"
+	ubuntu18.vm.provider "virtualbox" do |vb|
 	  # vm name
-	  vb.name = "ubuntu-web"
+	  vb.name = "ubuntu18-web"
 	end
-	ubuntu.vm.provision "shell", inline: <<-SHELL
-	  apt -y update
-	SHELL
   end
 
+  config.vm.define "ubuntu20" do |ubuntu20|
+    ubuntu20.vm.box = "ubuntu/focal64"
+    ubuntu20.vm.hostname = "ubuntu20"
+    ubuntu20.vm.network "private_network", ip: "192.168.56.107"
+	ubuntu20.vm.provider "virtualbox" do |vb|
+	  # vm name
+	  vb.name = "ubuntu20"
+	end
+  end
+
+  config.vm.define "ubuntu21" do |ubuntu21|
+    ubuntu21.vm.box = "ubuntu/hirsute64"
+    ubuntu21.vm.hostname = "ubuntu21"
+    ubuntu21.vm.network "private_network", ip: "192.168.56.108"
+	ubuntu21.vm.provider "virtualbox" do |vb|
+	  # vm name
+	  vb.name = "ubuntu21"
+	end
+  end  
+  
   config.vm.define "awx", autostart: false do |awx|
       awx.vm.box = "centos/7"
       awx.vm.hostname = "awx"
-      awx.vm.network "private_network", ip: "192.168.56.107"
+      awx.vm.network "private_network", ip: "192.168.56.110"
 	  awx.vm.provider "virtualbox" do |vb|
 	  	# 2 x vCPU
 	    vb.cpus = 2
