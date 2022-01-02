@@ -41,6 +41,7 @@
       package:
         name: python3
         state: present
+      ignore_errors: yes
     - name: Install MySQL server and PHP
       package:
         name: 
