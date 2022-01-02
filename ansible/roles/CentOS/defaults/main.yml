@@ -1,2 +1,9 @@
 ---
 # defaults file for CentOS
+install_pkgs:
+  - libselinux-python
+
+remove_pkgs:
+  - telnet-server
+  - talk-server
+  - ypserv
