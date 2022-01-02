@@ -49,8 +49,6 @@
           - php
           - php-mysql
         state: present
-      notify:
-        - Enable mysql
     - name: Install LAMP - CentOS
       when:
         - ansible_distribution == "CentOS"
