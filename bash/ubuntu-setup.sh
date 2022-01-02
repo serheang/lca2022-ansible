@@ -17,9 +17,11 @@ systemctl enable mysql
 cat >/var/www/html/index.html<<EOF
 <html>
 <title>Test page for LCA2022</title>
+<h2>$HOSTNAME</h2>
 <body>
 <h1>LCA2022 - Test landing page</h1>
-Welcome to LCA2022!
+<p>Welcome to LCA2022!<p>
+This is running on $HOSTNAME, OS: $OS, Version: $VER
 </body>
 </html>
 EOF
