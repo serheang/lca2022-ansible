@@ -1,22 +1,22 @@
-Role Name
+lamp
 =========
 
-A brief description of the role goes here.
+This is a simplified role to install LAMP stack onto CentOS or Ubuntu.  The purpose of the role is to be used in LCA2022 miniconf talk.
+This role still require steps to setup and configure mysql server and securing the apache service.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+N/A
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+N/A
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
 Example Playbook
 ----------------
@@ -25,14 +25,14 @@ Including an example of how to use your role (for instance, with variables passe
 
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+         - { role: lamp }
 
 License
 -------
 
-BSD
+CC-BY-SA-4.0
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Ser Heang TAN <serheang@gmail.com>

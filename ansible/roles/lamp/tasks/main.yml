@@ -1,2 +1,84 @@
 ---
 # tasks file for lamp
+- name: Install LAMP for CentOS
+  when:
+    - ansible_distribution == "CentOS"
+  block:
+    - name: Setup mysql 8.0 community repo
+      yum:
+        name: "https://dev.mysql.com/get/mysql80-community-release-el{{ ansible_distribution_major_version }}-4.noarch.rpm"
+        state: present
+        update_cache: yes
+    - name: Install httpd
+      yum:
+        name: httpd
+        state: present
+        update_cache: yes
+      notify:
+        - Enable httpd
+    - name: Install mysql-server
+      yum:
+        name: mysql-server
+        state: present
+        update_cache: yes
+      notify:
+        - Enable mysql in CentOS
+    - name: Install relevant PHP packages
+      yum:
+        name:
+          - php
+          - php-mysql
+        state: present
+        update_cache: yes
+
+- name: Install LAMP for Ubuntu
+  when:
+    - ansible_distribution == "Ubuntu"
+  block:
+    - name: Install apache2
+      yum:
+        name: apache2
+        state: present
+        update_cache: yes
+      notify:
+        - Enable apache2
+    - name: Install mysql-server
+      yum:
+        name: mysql-server
+        state: present
+        update_cache: yes
+      notify:
+        - Enable mysql in Ubuntu
+    - name: Install relevant PHP packages
+      yum:
+        name:
+          - php
+          - libapache2-mod-php
+          - php-mysql
+        state: present
+        update_cache: yes
+
+- name: Create customize index.html
+  blockinfile:
+    path: /var/www/html/index.html
+    marker: <!-- {mark} index.html -->
+    create: yes
+    block: |
+      <html>
+      <title>Test page for LCA2022</title>
+      <body>
+      <h1>LCA2022 - Test landing page</h1>
+      <h2>{{ ansible_hostname }}</h2>
+      <p>Welcome to LCA2022!<p>
+      This is running on {{ ansible_hostname }}, OS: {{ ansible_distribution }}, Version: {{ ansible_distribution_major_version }}
+      </body>
+      </html>
+
+- name: Create customize info.php
+  blockinfile:
+    path: /var/www/html/info.php
+    marker: <!-- {mark} info.php -->
+    create: yes
+    block: |
+      <?php phpinfo(); ?>
+  
