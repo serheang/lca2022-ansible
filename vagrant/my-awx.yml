@@ -66,6 +66,11 @@
         repo: "https://github.com/ansible/awx.git"
         version: 17.1.0
         dest: /srv/awx
+    - name: Uncomment admin_password for AWX
+      replace:
+        path: /srv/awx/installer/inventory
+        regexp: '^#(.*admin_password=password.*)'
+        replace: '\1'
         
   handlers:
     - name: Start docker

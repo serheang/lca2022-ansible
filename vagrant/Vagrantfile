@@ -133,7 +133,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	  # vm name
       vb.name = "centos7-awx"
 	end
-	awx.vm.provision "file", source: "inventory", destination: "/var/tmp/"
     # ansible_local provision
 	awx.vm.provision "ansible_local" do |ansible|
       ansible.playbook = "my-awx.yml"
@@ -145,7 +144,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ## Deploy AWX
 	cd /srv/awx/installer
 	git checkout -b 17.1.0
-	cp /var/tmp/inventory .
 	sudo ansible-playbook -i inventory install.yml
     SHELL
   end
