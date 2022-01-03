@@ -41,9 +41,8 @@
     - name: PIP install python3 libraries
       pip:
         name:
-          - cryptography
+          - cryptography~=2.0
           - jsonschema
-          - docker-py
           - docker-compose~=1.23.0
           - docker
         executable: pip3
@@ -61,7 +60,7 @@
         name: docker-ce
         state: present
         update_cache: yes
-        notify: Start docker       
+      notify: Start docker
     - name: Checkout awx.git
       git:
         repo: "https://github.com/ansible/awx.git"
@@ -71,6 +70,6 @@
   handlers:
     - name: Start docker
       systemd:
-        name: docker-ce
+        name: docker
         enabled: yes
         state: started
