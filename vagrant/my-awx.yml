@@ -69,7 +69,7 @@
     - name: Uncomment admin_password for AWX
       replace:
         path: /srv/awx/installer/inventory
-        regexp: '^#(.*admin_password=password.*)'
+        regexp: '^# (.*admin_password=password.*)'
         replace: '\1'
         
   handlers:
