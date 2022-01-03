@@ -77,6 +77,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     centos7.vm.hostname = "centos7"
     centos7.vm.network "private_network", ip: "192.168.56.105"
 	centos7.vm.provider "virtualbox" do |vb|
+	  # Customize the amount of memory on the VM:
+      vb.memory = 768
 	  # vm name
 	  vb.name = "centos7-web"
 	end
@@ -104,7 +106,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ubuntu20.vm.network "private_network", ip: "192.168.56.107"
 	ubuntu20.vm.provider "virtualbox" do |vb|
 	  # Customize the amount of memory on the VM:
-      vb.memory = 1024
+      vb.memory = 768
 	  # vm name
 	  vb.name = "ubuntu20"
 	end
