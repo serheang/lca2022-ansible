@@ -15,7 +15,7 @@
           - git
         state: present
         update_cache: yes
-    - name: Remove old docker
+    - name: Remove old docker python
       yum:
         name: python-docker-py
         state: absent
@@ -28,7 +28,6 @@
           - libselinux-python3
           - python3-devel
           - python3-pip
-          - python3-docker-py
         state: present
         update_cache: yes
     - name: Install other packages that require for docker
@@ -44,6 +43,7 @@
         name:
           - cryptography
           - jsonschema
+          - docker-py
           - docker-compose~=1.23.0
           - docker
         executable: pip3
