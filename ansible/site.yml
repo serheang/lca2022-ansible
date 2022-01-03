@@ -1,6 +1,5 @@
 ---
 - hosts: "{{ hostgrp | default('all') }}"
-  gather_facts: true
   become: yes
   tasks:
     - name: Setup for CentOS
@@ -17,3 +16,6 @@
         - name: Ubuntu
           include_role:
             name: Ubuntu
+    - name: Setup LAMP
+      include_role:
+        name: lamp
