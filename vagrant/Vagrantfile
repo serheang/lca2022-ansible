@@ -29,13 +29,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	service sshd restart
   SHELL
   
-  config.vm.define "cent7gui", primary: true do |cent7gui|
-    #  name for VM
-    cent7gui.vm.hostname = "centos7-mgt"
-    cent7gui.vm.network "private_network", ip: "192.168.56.100"
-    cent7gui.vm.box = "centos/7"
-	cent7gui.vm.boot_timeout = 180
-    cent7gui.vm.provider "virtualbox" do |vb|
+  config.vm.define "mgt", primary: true do |mgt|
+    # name for VM
+    mgt.vm.hostname = "centos7-mgt"
+    mgt.vm.network "private_network", ip: "192.168.56.100"
+    mgt.vm.box = "centos/7"
+	mgt.vm.boot_timeout = 180
+    mgt.vm.provider "virtualbox" do |vb|
 	  # 2 x vCPU
 	  vb.cpus = 2
       # Display the VirtualBox GUI when booting the machine
@@ -45,18 +45,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	  # vm name
 	  vb.name = "centos7-mgt"
     end
-	# hosts
-	cent7gui.vm.provision "file", source: "localhosts", destination: "/var/tmp/hosts"
-	cent7gui.vm.provision "shell", inline: <<-HOST
-	  mv /etc/hosts /etc/hosts.bak
-	  mv /var/tmp/hosts /etc/hosts
-	HOST
-    # simple configure
-    cent7gui.vm.provision "shell", inline: <<-SHELL
-      yum makecache
-	  yum -y install git
-	  git clone https://github.com/serheang/lca2022-ansible
-	SHELL
+    # ansible_local provision
+	mgt.vm.provision "ansible_local" do |ansible|
+      ansible.playbook = "my-mgt.yml"
+	  ansible.install_mode = "default"
+	end
   end
   
   config.vm.define "centos6" do |centos6|
@@ -100,7 +93,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	SHELL
   end
 
-  config.vm.define "ubuntu20" do |ubuntu20|
+  config.vm.define "ubuntu20", autostart: false do |ubuntu20|
     ubuntu20.vm.box = "ubuntu/focal64"
     ubuntu20.vm.hostname = "ubuntu20"
     ubuntu20.vm.network "private_network", ip: "192.168.56.107"
@@ -129,44 +122,50 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end  
   
   config.vm.define "awx", autostart: false do |awx|
-      awx.vm.box = "centos/7"
-      awx.vm.hostname = "awx"
-      awx.vm.network "private_network", ip: "192.168.56.110"
-	  awx.vm.provider "virtualbox" do |vb|
-	  	# 2 x vCPU
-	    vb.cpus = 2
-        # Customize the amount of memory on the VM:
-        vb.memory = 4096
-	    # vm name
-    	vb.name = "centos7-awx"
-	  end
-	  awx.vm.provision "file", source: "inventory", destination: "/var/tmp/"
-	  awx.vm.provision "shell", inline: <<-SHELL
-	  # Official steps: https://github.com/ansible/awx/blob/17.0.1/INSTALL.md
-	  # The below steps are from https://howto.lintel.in/install-ansible-tower-awx-centos-7/
-	  ## Install dependencies
-	  yum -y install epel-release
-	  yum remove python-docker-py
- 	  ## Some extra python3 packages
-	  yum -y install python3 libselinux-python3
-	  yum install -y yum-utils device-mapper-persistent-data lvm2 ansible git python3-devel python3-pip python3-docker-py
-	  pip3 install cryptography
-      pip3 install jsonschema
-      pip3 install docker-compose~=1.23.0
-      pip3 install docker --upgrade
-	  ## Do a softlink for docker-compose
-	  ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-	  ## Install Docker
-	  yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
-	  yum -y install docker-ce
-	  systemctl enable docker
-	  systemctl start docker
-      ## Deploy AWX
-	  git clone -b 17.1.0 https://github.com/ansible/awx.git
-	  cd awx/installer
-	  git checkout -b 17.1.0
-	  cp /var/tmp/inventory .
-	  sudo ansible-playbook -i inventory install.yml
+    awx.vm.box = "centos/7"
+    awx.vm.hostname = "awx"
+    awx.vm.network "private_network", ip: "192.168.56.110"
+	awx.vm.provider "virtualbox" do |vb|
+	  # 2 x vCPU
+	  vb.cpus = 2
+      # Customize the amount of memory on the VM:
+      vb.memory = 4096
+	  # vm name
+      vb.name = "centos7-awx"
+	end
+	awx.vm.provision "file", source: "inventory", destination: "/var/tmp/"
+    # ansible_local provision
+	awx.vm.provision "ansible_local" do |ansible|
+      ansible.playbook = "my-awx.yml"
+	  ansible.install_mode = "default"
+	end
+
+	awx.vm.provision "shell", inline: <<-SHELL
+	# Official steps: https://github.com/ansible/awx/blob/17.0.1/INSTALL.md
+	# The below steps are from https://howto.lintel.in/install-ansible-tower-awx-centos-7/
+	## Install dependencies
+	yum -y install epel-release
+	yum remove python-docker-py
+ 	## Some extra python3 packages
+	yum -y install python3 libselinux-python3
+	yum install -y yum-utils device-mapper-persistent-data lvm2 ansible git python3-devel python3-pip python3-docker-py
+	pip3 install cryptography
+    pip3 install jsonschema
+    pip3 install docker-compose~=1.23.0
+    pip3 install docker --upgrade
+	## Do a softlink for docker-compose
+	ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+	## Install Docker
+	yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+	yum -y install docker-ce
+	systemctl enable docker
+	systemctl start docker
+    ## Deploy AWX
+	git clone -b 17.1.0 https://github.com/ansible/awx.git
+	cd awx/installer
+	git checkout -b 17.1.0
+	cp /var/tmp/inventory .
+	sudo ansible-playbook -i inventory install.yml
     SHELL
   end
 end
