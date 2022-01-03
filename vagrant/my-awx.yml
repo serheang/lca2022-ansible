@@ -1,0 +1,76 @@
+---
+# Setup for my centos awx VM
+- hosts: "{{ hostgrp | default('all') }}"
+  become: yes
+  tasks:
+    - name: Install EPEL
+      yum:
+        name: epel-release
+        state: present
+        update_cache: yes
+    - name: Install ansible and git
+      yum:
+        name:
+          - ansible
+          - git
+        state: present
+        update_cache: yes
+    - name: Remove old docker
+      yum:
+        name: python-docker-py
+        state: absent
+        autoremove: yes
+        update_cache: yes
+    - name: Install python3 packages
+      yum:
+        name:
+          - python3
+          - libselinux-python3
+          - python3-devel
+          - python3-pip
+          - python3-docker-py
+        state: present
+        update_cache: yes
+    - name: Install other packages that require for docker
+      yum:
+        name:
+          - yum-utils
+          - device-mapper-persistent-data
+          - lvm2
+        state: present
+        update_cache: yes
+    - name: PIP install python3 libraries
+      pip:
+        name:
+          - cryptography
+          - jsonschema
+          - docker-compose~=1.23.0
+          - docker
+        executable: pip3
+    - name: Create softlink for docker-compose
+      file:
+        src: /usr/local/bin/docker-compose
+        dest: /usr/bin/docker-compose
+        state: link
+    - name: Setup docker-ce repo
+      shell: yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+      args:
+        creates: /etc/yum.repos.d/docker-ce.repo
+    - name: Install docker-ce
+      yum:
+        name: docker-ce
+        state: present
+        update_cache: yes
+        notify: Start docker       
+    - name: Checkout awx.git
+      git:
+        repo: "https://github.com/ansible/awx.git"
+        version: 17.1.0
+        dest: /srv/awx
+        
+  handlers:
+    - name: Start docker
+      systemd:
+        name: docker-ce
+        enabled: yes
+        state: started

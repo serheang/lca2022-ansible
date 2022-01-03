@@ -139,30 +139,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       ansible.playbook = "my-awx.yml"
 	  ansible.install_mode = "default"
 	end
-
 	awx.vm.provision "shell", inline: <<-SHELL
 	# Official steps: https://github.com/ansible/awx/blob/17.0.1/INSTALL.md
 	# The below steps are from https://howto.lintel.in/install-ansible-tower-awx-centos-7/
-	## Install dependencies
-	yum -y install epel-release
-	yum remove python-docker-py
- 	## Some extra python3 packages
-	yum -y install python3 libselinux-python3
-	yum install -y yum-utils device-mapper-persistent-data lvm2 ansible git python3-devel python3-pip python3-docker-py
-	pip3 install cryptography
-    pip3 install jsonschema
-    pip3 install docker-compose~=1.23.0
-    pip3 install docker --upgrade
-	## Do a softlink for docker-compose
-	ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-	## Install Docker
-	yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
-	yum -y install docker-ce
-	systemctl enable docker
-	systemctl start docker
     ## Deploy AWX
-	git clone -b 17.1.0 https://github.com/ansible/awx.git
-	cd awx/installer
+	cd /srv/awx/installer
 	git checkout -b 17.1.0
 	cp /var/tmp/inventory .
 	sudo ansible-playbook -i inventory install.yml
