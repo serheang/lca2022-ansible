@@ -1,7 +1,7 @@
 # This is the placeholder for some bash scripts
 These are some bash scripts that I would be using in my LCA2022.
 
-## Basic setup
+## Info
 For CentOS 6
 1. centos6-setup.sh
 
