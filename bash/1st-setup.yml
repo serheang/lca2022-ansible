@@ -12,11 +12,11 @@
             - ansible_distribution_major_version == "6"
           script:
             cmd: centos6-setup.sh
-         - name: For CentOS 7
+        - name: For CentOS 7
           when:
             - ansible_distribution_major_version == "7"
           script:
-             cmd: centos7-setup.sh
+            cmd: centos7-setup.sh
     - name: Setup for Ubuntu
       when:
         - ansible_distribution == "Ubuntu"
