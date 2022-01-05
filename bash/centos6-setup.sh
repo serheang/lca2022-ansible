@@ -4,9 +4,6 @@
 ## Install mysql-community repo
 rpm -ivh https://dev.mysql.com/get/mysql80-community-release-el6-4.noarch.rpm
 
-## Update yum cache
-yum makecache
-
 ## Install LAMP
 yum -y install httpd mysql-server php php-mysql
 
@@ -24,9 +21,8 @@ cat >/var/www/html/index.html<<EOF
 <h1>LCA2022 - Test landing page</h1>
 <h2>$HOSTNAME</h2>
 <p>Welcome to LCA2022!<p>
-This is running on $HOSTNAME, OS: $OS, Version: $VER
-</body>
-</html>
+This is running on $HOSTNAME.
+</body></html>
 EOF
 
 ## Create a simple php info page

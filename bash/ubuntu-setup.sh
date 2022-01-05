@@ -21,7 +21,7 @@ cat >/var/www/html/index.html<<EOF
 <body>
 <h1>LCA2022 - Test landing page</h1>
 <p>Welcome to LCA2022!<p>
-This is running on $HOSTNAME, OS: $OS, Version: $VER
+This is running on $HOSTNAM.
 </body>
 </html>
 EOF
