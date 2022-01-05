@@ -80,6 +80,36 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	SHELL
   end
 
+  config.vm.define "centos7_2", autostart: false do |centos7_2|
+    centos7_2.vm.box = "centos/7"
+    centos7_2.vm.hostname = "centos7-2"
+    centos7_2.vm.network "private_network", ip: "192.168.56.115"
+	centos7_2.vm.provider "virtualbox" do |vb|
+	  # Customize the amount of memory on the VM:
+      vb.memory = 256
+	  # vm name
+	  vb.name = "centos7-web2"
+	end
+	centos7_2.vm.provision "shell", inline: <<-SHELL
+      yum makecache
+	SHELL
+  end
+
+  config.vm.define "centos7_3", autostart: false do |centos7_3|
+    centos7_3.vm.box = "centos/7"
+    centos7_3.vm.hostname = "centos7-3"
+    centos7_3.vm.network "private_network", ip: "192.168.56.116"
+	centos7_3.vm.provider "virtualbox" do |vb|
+	  # Customize the amount of memory on the VM:
+      vb.memory = 256
+	  # vm name
+	  vb.name = "centos7-web3"
+	end
+	centos7_3.vm.provision "shell", inline: <<-SHELL
+      yum makecache
+	SHELL
+  end
+
   config.vm.define "ubuntu18" do |ubuntu18|
     ubuntu18.vm.box = "ubuntu/bionic64"
     ubuntu18.vm.hostname = "ubuntu18"
