@@ -40,7 +40,7 @@ if [[ $OS =~ "CentOS".* ]]; then
   elif [[ $VER == "7" ]]; then
     rpm -ivh https://dev.mysql.com/get/mysql80-community-release-el7-4.noarch.rpm
   fi
-  ## Update cache
+  ## Update yum cache
   yum makecache
   ### Install LAMP
   yum -y install httpd mysql-server php php-mysql
