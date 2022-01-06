@@ -21,15 +21,11 @@
         insertafter: EOF
         block: |
           192.168.56.100    centos7-mgt
-          192.168.56.104    centos6 web1
           192.168.56.105    centos7 centos7-web1
-          192.168.56.106    ubuntu18 web3
-          192.168.56.107    ubuntu20
-          192.168.56.108    ubuntu21
+          192.168.56.106    ubuntu18 ubuntu-web1
           192.168.56.110    centos7-awx awx
           192.168.56.115    centos7-2 centos7-web2
-          192.168.56.116    centos7-3 centos7-web3
-          
+          192.168.56.116    centos7-3 centos7-web3       
     - name: Checkout lca2022-ansible.git
       git:
         repo: "https://github.com/serheang/lca2022-ansible"
