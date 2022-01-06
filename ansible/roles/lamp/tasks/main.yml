@@ -5,30 +5,30 @@
     - ansible_distribution == "CentOS"
   block:
     - name: Setup mysql 8.0 community repo
-      yum:
+      package:
         name: "https://dev.mysql.com/get/mysql80-community-release-el{{ ansible_distribution_major_version }}-4.noarch.rpm"
-        state: present
+        state: latest
         update_cache: yes
     - name: Install httpd
-      yum:
+      package:
         name: httpd
-        state: present
+        state: latest
         update_cache: yes
       notify:
         - Enable httpd
     - name: Install mysql-server
-      yum:
+      package:
         name: mysql-server
-        state: present
+        state: latest
         update_cache: yes
       notify:
         - Enable mysql in CentOS
     - name: Install relevant PHP packages
-      yum:
+      package:
         name:
           - php
           - php-mysql
-        state: present
+        state: latest
         update_cache: yes
 
 - name: Install LAMP for Ubuntu
@@ -36,26 +36,26 @@
     - ansible_distribution == "Ubuntu"
   block:
     - name: Install apache2
-      yum:
+      package:
         name: apache2
-        state: present
+        state: latest
         update_cache: yes
       notify:
         - Enable apache2
     - name: Install mysql-server
-      yum:
+      package:
         name: mysql-server
-        state: present
+        state: latest
         update_cache: yes
       notify:
         - Enable mysql in Ubuntu
     - name: Install relevant PHP packages
-      yum:
+      package:
         name:
           - php
           - libapache2-mod-php
           - php-mysql
-        state: present
+        state: latest
         update_cache: yes
 
 - name: Create customize index.html
