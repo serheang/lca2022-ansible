@@ -17,7 +17,8 @@ systemctl enable mysqld
 cat >/var/www/html/index.html<<EOF
 <html>
 <title>Test page for LCA2022</title>
-<body><h1>LCA2022 - Test landing page</h1>
+<body>
+<h1>LCA2022 - Test landing page</h1>
 <h2>$HOSTNAME</h2>
 <p>Welcome to LCA2022!<p>
 This is running on $HOSTNAME.
