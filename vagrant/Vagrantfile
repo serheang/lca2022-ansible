@@ -76,6 +76,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	  vb.name = "centos7-web"
 	end
 	centos7.vm.provision "shell", inline: <<-SHELL
+	  rpm -ivh https://dev.mysql.com/get/mysql80-community-release-el7-4.noarch.rpm
       yum makecache
 	SHELL
   end
@@ -91,6 +92,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	  vb.name = "centos7-web2"
 	end
 	centos7_2.vm.provision "shell", inline: <<-SHELL
+	  rpm -ivh https://dev.mysql.com/get/mysql80-community-release-el7-4.noarch.rpm
       yum makecache
 	SHELL
   end
@@ -106,6 +108,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	  vb.name = "centos7-web3"
 	end
 	centos7_3.vm.provision "shell", inline: <<-SHELL
+	  rpm -ivh https://dev.mysql.com/get/mysql80-community-release-el7-4.noarch.rpm
       yum makecache
 	SHELL
   end
