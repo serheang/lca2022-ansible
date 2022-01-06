@@ -9,7 +9,7 @@
       block:
         - name: Enable EPEL
           package:
-            name: epel-releas
+            name: epel-release
             state: latest
         - name: Setup MySQL repo - CentOS 6
           when:
