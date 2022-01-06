@@ -8,49 +8,35 @@
         - ansible_distribution == "CentOS"
       block:
         - name: Enable EPEL
-          yum: "name=epel-release state=latest"
+          package:
+            name: epel-releas
+            state: latest
         - name: Setup MySQL repo - CentOS 6
           when:
             - ansible_distribution_major_version == "6"
-          yum:
+          package:
             name: https://dev.mysql.com/get/mysql80-community-release-el6-4.noarch.rpm
-            state: present
-            update_cache: yes
+            state: latest
         - name: Setup MySQL repo - CentOS 7
           when:
             - ansible_distribution_major_version == "7"
-          yum:
+          package:
             name: https://dev.mysql.com/get/mysql80-community-release-el7-4.noarch.rpm
-            state: present
-            update_cache: yes
+            state: latest
         - name: Install additional packages
-          yum:
+          package:
             name:
               - libselinux-python
-            state: present
-            update_cache: yes
-
-    - name: Setup for Ubuntu
-      when:
-        - ansible_distribution == "Ubuntu"
-      block:
-        - name: Update apt cache
-          apt: 
-            update_cache: yes
-        - name: Install libapache2-mod-php
-          apt:
-            name: libapache2-mod-php
-            state: present
-            update_cache: yes
+            state: latest
 
     - name: Install ansible
       package:
         name: ansible
-        state: present
+        state: latest
     - name: Install python3
       package:
         name: python3
-        state: present
+        state: latest
       ignore_errors: yes
     - name: Install MySQL server and PHP
       package:
@@ -58,17 +44,16 @@
           - mysql-server
           - php
           - php-mysql
-        state: present
+        state: latest
     - name: Install LAMP - CentOS
       when:
         - ansible_distribution == "CentOS"
       block:
         - name: Install httpd
-          yum:
+          package:
             name:
               - httpd
-            state: present
-            update_cache: yes
+            state: latest
         - name: Enable and start httpd
           service:
             name: httpd
@@ -85,12 +70,11 @@
         - ansible_distribution == "Ubuntu"
       block:
         - name: Install apache2
-          apt:
+          package:
             name:
               - apache2
               - libapache2-mod-php
-            state: present
-            update_cache: yes
+            state: latest
         - name: Enable and start apache2
           service:
             name: apache2
