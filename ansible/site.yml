@@ -18,15 +18,13 @@
   hosts: "{{ hostgrp | default('centos7-mgt') }}"
   become: yes
   tasks:
-    - name: Install ansible
+    - name: Install extra packages
       package:
-        name: ansible
+        name:
+          - ansible
+          - python3
         state: latest
         update_cache: yes
-    - name: Install python3
-      package:
-        name: python3
-        state: latest
       ignore_errors: yes
 
 - name: LAMP setup
