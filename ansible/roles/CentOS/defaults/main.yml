@@ -1,7 +1,6 @@
 ---
 # defaults file for CentOS
 install_pkgs:
-  - ansible
   - libselinux-python
 
 remove_pkgs:

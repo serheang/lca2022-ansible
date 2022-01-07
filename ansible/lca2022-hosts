@@ -1,10 +1,6 @@
+mgt
+
 [lamp]
 centos7
 centos7-2
-centos7-3
 ubuntu18
-
-[others]
-centos6
-awx
-mgt

@@ -1,21 +1,36 @@
 ---
-- hosts: "{{ hostgrp | default('all') }}"
+- name: Setup for distro
+  hosts: "{{ hostgrp | default('all') }}"
   become: yes
   tasks:
     - name: Setup for CentOS
       when:
         - ansible_distribution == "CentOS"
-      block:
-        - name: CentOS
-          include_role:
-            name: CentOS
+      include_role:
+        name: CentOS
     - name: Setup for Ubuntu
       when:
         - ansible_distribution == "Ubuntu"
-      block:
-        - name: Ubuntu
-          include_role:
-            name: Ubuntu
+      include_role:
+        name: Ubuntu
+
+- name: Setup for management node
+  hosts: "{{ hostgrp | default('mgt') }}"
+  become: yes
+  tasks:
+    - name: Install ansible
+      package:
+        name: ansible
+        state: latest
+        update_cache: yes
+    - name: Install python3
+      package:
+        name: python3
+        state: latest
+      ignore_errors: yes
+
+- name: LAMP setup
+  hosts: "{{ hostgrp | default('lamp') }}"
     - name: Setup LAMP
       include_role:
         name: lamp
