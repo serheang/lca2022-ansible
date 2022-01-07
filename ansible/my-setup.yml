@@ -28,16 +28,6 @@
             name:
               - libselinux-python
             state: latest
-
-    - name: Install ansible
-      package:
-        name: ansible
-        state: latest
-    - name: Install python3
-      package:
-        name: python3
-        state: latest
-      ignore_errors: yes
     - name: Install MySQL server and PHP
       package:
         name: 
