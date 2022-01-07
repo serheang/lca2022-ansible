@@ -1,6 +1,5 @@
 ---
-- hosts: "{{ hostgrp | default('all') }}"
-  gather_facts: true
+- hosts: "{{ hostgrp | default('lamp') }}"
   become: yes
   tasks:
     - name: Setup for CentOS
