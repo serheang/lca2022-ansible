@@ -15,7 +15,7 @@
         name: Ubuntu
 
 - name: Setup for management node
-  hosts: "{{ hostgrp | default('mgt') }}"
+  hosts: "{{ hostgrp | default('centos7-mgt') }}"
   become: yes
   tasks:
     - name: Install ansible
@@ -31,6 +31,7 @@
 
 - name: LAMP setup
   hosts: "{{ hostgrp | default('lamp') }}"
+  tasks:
     - name: Setup LAMP
       include_role:
         name: lamp
