@@ -1,5 +1,8 @@
 ---
 # tasks file for CentOS
+- name: Update yum cache
+  yum:
+    update_cache: yes
 - name: Enable EPEL repo
   yum:
     name: epel-release
