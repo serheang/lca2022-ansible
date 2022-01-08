@@ -1,6 +1,7 @@
 ---
 # Setup for my centos mgt vm
-- hosts: "{{ hostgrp | default('all') }}"
+- name: Setup mgt vm
+  hosts: "{{ hostgrp | default('all') }}"
   become: yes
   tasks:
     - name: Install EPEL
