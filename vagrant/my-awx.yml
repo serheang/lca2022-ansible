@@ -1,6 +1,7 @@
 ---
 # Setup for my centos awx VM
-- hosts: "{{ hostgrp | default('all') }}"
+- name: Setup awx vm
+  hosts: "{{ hostgrp | default('all') }}"
   become: yes
   tasks:
     - name: Install EPEL
@@ -15,6 +16,16 @@
           - git
         state: present
         update_cache: yes
+    - name: Setup local hosts into /etc/hosts
+      blockinfile:
+        path: /etc/hosts
+        insertafter: EOF
+        block: |
+          192.168.56.100    centos7-mgt mgt
+          192.168.56.105    centos7 centos7-web1
+          192.168.56.106    ubuntu18 ubuntu-web1
+          192.168.56.110    centos7-awx awx
+          192.168.56.115    centos7-2 centos7-web2
     - name: Remove old docker python
       yum:
         name: python-docker-py
@@ -61,6 +72,8 @@
         state: present
         update_cache: yes
       notify: Start docker
+    - name: Force all notified handlers to run at this point, not waiting for normal sync points
+      meta: flush_handlers
     - name: Checkout awx.git
       git:
         repo: "https://github.com/ansible/awx.git"
