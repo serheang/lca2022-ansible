@@ -10,23 +10,19 @@
           package:
             name: epel-release
             state: latest
+            update_cache: yes
         - name: Setup MySQL repo - CentOS 6
           when:
             - ansible_distribution_major_version == "6"
           package:
             name: https://dev.mysql.com/get/mysql80-community-release-el6-4.noarch.rpm
-            state: latest
+            state: present
         - name: Setup MySQL repo - CentOS 7
           when:
             - ansible_distribution_major_version == "7"
           package:
             name: https://dev.mysql.com/get/mysql80-community-release-el7-4.noarch.rpm
-            state: latest
-        - name: Install additional packages
-          package:
-            name:
-              - libselinux-python
-            state: latest
+            state: present
     - name: Install MySQL server and PHP
       package:
         name: 
@@ -77,6 +73,7 @@
       blockinfile:
         path: /var/www/html/index.html
         marker: <!-- {mark} index.html -->
+        insertbefore: BOF
         create: yes
         block: |
           <html>
