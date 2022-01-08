@@ -5,18 +5,20 @@
     name: httpd
     enabled: yes
     state: started
+
 - name: Enable mysql in CentOS
   service:
     name: mysqld
     enabled: yes
-    state: started
+
 - name: Enable apache2
   systemd:
     name: apache2
     enabled: yes
     state: started
+
 - name: Enable mysql in Ubuntu
   service:
     name: mysql
     enabled: yes
-    state: started
+
