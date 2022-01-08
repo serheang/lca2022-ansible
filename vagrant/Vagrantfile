@@ -114,6 +114,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ubuntu18.vm.hostname = "ubuntu18"
     ubuntu18.vm.network "private_network", ip: "192.168.56.106"
 	ubuntu18.vm.provider "virtualbox" do |vb|
+      # Customize the amount of memory on the VM:
+      vb.memory = 768
 	  # vm name
 	  vb.name = "ubuntu18-web"
 	end
