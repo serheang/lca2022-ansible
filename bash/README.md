@@ -14,6 +14,8 @@ For Ubuntu
 For both CentOS and Ubuntu
 1. my-setup.sh
 
+Inventory file: `lamp`  
+
 ## Basic instruction
 Transfer/copy the relevant script to relevant distro, or use `my-setup.sh` for setup on either CentOS or Ubuntu.
 
@@ -27,8 +29,20 @@ ssh centos6
 ```
 or
 ```
-scp my-setup.sh centos6:/tmp/
-ssh centos6
+scp my-setup.sh ubuntu:/tmp/
+ssh ubuntu
     chmod +x /tmp/my-setup.sh
     sudo /tmp/my-setup.sh
+```
+
+### Execute script via ssh
+Example:
+```
+ssh centos7 'sudo bash -s' < my-setup.sh
+```
+or
+```
+for host in `cat lamp`; do
+ssh $host 'sudo bash -s' < my-setup.sh
+done
 ```
