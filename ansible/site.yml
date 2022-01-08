@@ -1,6 +1,6 @@
 ---
 - name: Setup for distro
-  hosts: "{{ hostgrp | default('all') }}"
+  hosts: "{{ linuxgrp | default('all') }}"
   become: yes
   tasks:
     - name: Setup for CentOS
@@ -15,7 +15,7 @@
         name: Ubuntu
 
 - name: Setup for management node
-  hosts: "{{ hostgrp | default('centos7-mgt') }}"
+  hosts: "{{ mgtgrp | default('mgt') }}"
   become: yes
   tasks:
     - name: Install extra packages
@@ -28,7 +28,7 @@
       ignore_errors: yes
 
 - name: LAMP setup
-  hosts: "{{ hostgrp | default('lamp') }}"
+  hosts: "{{ lampgrp | default('lamp') }}"
   tasks:
     - name: Setup LAMP
       include_role:
