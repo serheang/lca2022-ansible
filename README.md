@@ -33,7 +33,30 @@ I want to share my ansible journey, from shell to galaxy with you.
 1. Change directory into `vagrant` - `cd lca2022-ansible/vagrant`  
 1. Setup the necessary VMs with `vagrant` - `vagrant up`
     > If you want to have AWX as well, the you will need to run this after the above completed - `vagrant up awx`
-1. 
+	> You should take a snapshot of the existing VMs state so that you can quicky restore if something went wrong - `vagrant snapshot save b4anything`
+1. If you have a ssh client, such as putty (Windows/Linux), you can ssh into VM **mgt**, via the IP: 192.168.56.100.  Or you can use `vagrant` - `vagrant ssh mgt`
+    > If you just run `vagrant ssh` it will by default go to **mgt**
+1. In **mgt**, first you change directory to `/srv/lca2022-ansible/` - `cd /srv/lca2022-ansible/`.
+1. Then you can either go to `bash/` (shell scripts) or `ansible/` (playbooks and roles) to run relevant tasks.
+
+## Bash example
+1. In **mgt**, change directory to `/srv/lca2022-ansible/bash` - `cd /srv/lca2022-ansible/bash`.
+1. You can run `my-setup.sh` onto any of hosts in file `lamp`, which is "centos7", "centos7-2" and "ubuntu18".
+    > You can run it in this way:
+	```
+	for host in `cat lamp`; do
+	ssh $host 'sudo bash -s' < my-setup.sh
+	done
+	```
+1. You can check out further details in the `bash/README.md`.
+
+## Ansible example
+1. In **mgt**, change directory to `/srv/lca2022-ansible/ansible` - `cd /srv/lca2022-ansible/ansible`.
+1. You can run ansible playbook `my-setup.yml` onto any of hosts in file `hosts`, which is "centos7", "centos7-2" and "ubuntu18".
+	```
+	ansible-playbook my-setup.yml 
+	```
+1. You can check out further details in the `ansible/README.md`.
 
 ## More info
 Here is a placeholder for the shell scripts, ansible playbooks/roles and Vagrantfile that I used in my talk.  
