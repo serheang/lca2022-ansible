@@ -9,7 +9,7 @@
         - name: Enable EPEL
           package:
             name: epel-release
-            state: latest
+            state: present
             update_cache: yes
         - name: Setup MySQL repo - CentOS 6
           when:
@@ -29,7 +29,7 @@
           - mysql-server
           - php
           - php-mysql
-        state: latest
+        state: present
     - name: Install LAMP - CentOS
       when:
         - ansible_distribution == "CentOS"
@@ -38,7 +38,7 @@
           package:
             name:
               - httpd
-            state: latest
+            state: present
         - name: Enable and start httpd
           service:
             name: httpd
@@ -58,7 +58,7 @@
             name:
               - apache2
               - libapache2-mod-php
-            state: latest
+            state: present
         - name: Enable and start apache2
           service:
             name: apache2

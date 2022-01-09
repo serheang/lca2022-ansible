@@ -7,19 +7,19 @@
     - name: Setup mysql 8.0 community repo
       package:
         name: "https://dev.mysql.com/get/mysql80-community-release-el{{ ansible_distribution_major_version }}-4.noarch.rpm"
-        state: latest
+        state: present
         update_cache: yes
     - name: Install httpd
       package:
         name: httpd
-        state: latest
+        state: present
         update_cache: yes
       notify:
         - Enable httpd
     - name: Install mysql-server
       package:
         name: mysql-server
-        state: latest
+        state: present
         update_cache: yes
       notify:
         - Enable mysql in CentOS
@@ -28,7 +28,7 @@
         name:
           - php
           - php-mysql
-        state: latest
+        state: present
         update_cache: yes
 
 - name: Install LAMP for Ubuntu
@@ -38,14 +38,14 @@
     - name: Install apache2
       package:
         name: apache2
-        state: latest
+        state: present
         update_cache: yes
       notify:
         - Enable apache2
     - name: Install mysql-server
       package:
         name: mysql-server
-        state: latest
+        state: present
         update_cache: yes
       notify:
         - Enable mysql in Ubuntu
@@ -55,7 +55,7 @@
           - php
           - libapache2-mod-php
           - php-mysql
-        state: latest
+        state: present
         update_cache: yes
 
 - name: Copy templated index.html

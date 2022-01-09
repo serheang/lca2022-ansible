@@ -6,12 +6,12 @@
 - name: Enable EPEL repo
   yum:
     name: epel-release
-    state: latest
+    state: present
     update_cache: yes
 - name: Install additional packages
   yum:
     name: "{{ install_pkgs }}"
-    state: latest
+    state: present
     update_cache: yes
 - name: Remove unwanted packages
   yum:
