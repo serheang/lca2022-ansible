@@ -1,5 +1,5 @@
 ---
-- hosts: "{{ hostgrp | default('lamp') }}"
+- hosts: lamp
   become: yes
   tasks:
     - name: Setup for CentOS
@@ -93,5 +93,3 @@
         create: yes
         block: |
           <?php phpinfo(); ?>
-      
-  handlers:
