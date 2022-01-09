@@ -14,19 +14,6 @@
       include_role:
         name: Ubuntu
 
-- name: Setup for management node
-  hosts: management
-  become: yes
-  tasks:
-    - name: Install extra packages
-      package:
-        name:
-          - ansible
-          - python3
-        state: latest
-        update_cache: yes
-      ignore_errors: yes
-
 - name: LAMP setup
   hosts: lamp
   tasks:
