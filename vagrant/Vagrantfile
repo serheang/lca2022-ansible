@@ -51,20 +51,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	  ansible.install_mode = "default"
 	end
   end
-  
-  config.vm.define "centos6", autostart: false do |centos6|
-    centos6.vm.box = "bento/centos-6"
-    centos6.vm.hostname = "centos6"
-    centos6.vm.network "private_network", ip: "192.168.56.104"
-	centos6.vm.provider "virtualbox" do |vb|
-	  # vm name
-	  vb.name = "centos6-web"
-	end
-    centos6.vm.provision "shell", inline: <<-SHELL
-	  yum makecache
-	SHELL
-  end
-  
+    
   config.vm.define "centos7" do |centos7|
     centos7.vm.box = "centos/7"
     centos7.vm.hostname = "centos7"
@@ -79,7 +66,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	SHELL
   end
 
-  config.vm.define "centos7_2", autostart: false do |centos7_2|
+  config.vm.define "centos7_2" do |centos7_2|
     centos7_2.vm.box = "centos/7"
     centos7_2.vm.hostname = "centos7-2"
     centos7_2.vm.network "private_network", ip: "192.168.56.115"
@@ -88,22 +75,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	  vb.name = "centos7-web2"
 	end
 	centos7_2.vm.provision "shell", inline: <<-SHELL
-	  rpm -ivh https://dev.mysql.com/get/mysql80-community-release-el7-4.noarch.rpm
-      yum makecache
-	SHELL
-  end
-
-  config.vm.define "centos7_3", autostart: false do |centos7_3|
-    centos7_3.vm.box = "centos/7"
-    centos7_3.vm.hostname = "centos7-3"
-    centos7_3.vm.network "private_network", ip: "192.168.56.116"
-	centos7_3.vm.provider "virtualbox" do |vb|
-	  # Customize the amount of memory on the VM:
-      vb.memory = 256
-	  # vm name
-	  vb.name = "centos7-web3"
-	end
-	centos7_3.vm.provision "shell", inline: <<-SHELL
 	  rpm -ivh https://dev.mysql.com/get/mysql80-community-release-el7-4.noarch.rpm
       yum makecache
 	SHELL
@@ -121,6 +92,35 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	end
 	ubuntu18.vm.provision "shell",  inline: <<-SHELL
 	  apt -y update
+	SHELL
+  end
+  
+  config.vm.define "centos6", autostart: false do |centos6|
+    centos6.vm.box = "bento/centos-6"
+    centos6.vm.hostname = "centos6"
+    centos6.vm.network "private_network", ip: "192.168.56.104"
+	centos6.vm.provider "virtualbox" do |vb|
+	  # vm name
+	  vb.name = "centos6-web"
+	end
+    centos6.vm.provision "shell", inline: <<-SHELL
+	  yum makecache
+	SHELL
+  end
+
+  config.vm.define "centos7_3", autostart: false do |centos7_3|
+    centos7_3.vm.box = "centos/7"
+    centos7_3.vm.hostname = "centos7-3"
+    centos7_3.vm.network "private_network", ip: "192.168.56.116"
+	centos7_3.vm.provider "virtualbox" do |vb|
+	  # Customize the amount of memory on the VM:
+      vb.memory = 256
+	  # vm name
+	  vb.name = "centos7-web3"
+	end
+	centos7_3.vm.provision "shell", inline: <<-SHELL
+	  rpm -ivh https://dev.mysql.com/get/mysql80-community-release-el7-4.noarch.rpm
+      yum makecache
 	SHELL
   end
 
