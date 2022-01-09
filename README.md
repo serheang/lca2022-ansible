@@ -4,8 +4,7 @@
 - [Acknowledgement of the Country](#acknowledgement-of-the-country)
 - [Abstract](#abstract)
 - [TL;DR](#tldr)
-- [whoami](#whoami)
-
+- [Initial setup](#initial-setup)
 - [More info](#more-info)
 
 ##  Acknowledgement of the Country
@@ -19,11 +18,20 @@ When I first started learning Linux, I did  my configuration with bash scripts +
 I want to share my ansible journey, from shell to galaxy with you.
 
 ## TL;DR
+- This is a placeholder of how I got my VMs setup, bash scripts and ansible playbooks/roles created for LCA2022 tech talk
+- VirtualBox + vagrant are used to setup the VMs used in the demo  
+- bash/ directory kept the shell scripts used in the demo
+- ansible/ directory kept the ansible playbooks used in the demo
 
-## whoami
-I was known as "Tan Ser Heang" for the good old 40+ years, but here in Australia I am known as "Ser Henag TAN".  Sometimes people in Australia called me "Sir" (Ser).  I am not knighted (yet), so you can just call me by my lastname "TAN".  
-I had been playing with PC (games) since 1990, and been living, learning and loving Linux since the millenium (Y2K).  I don't consider myself Linux Expert, but I am fascinated with Linux and how it had changed ans shaped the (IT) world.  
-1 of my many life goals is to automate myself out of (repetitive) IT administration jobs :D 
+## Prerequisite
+1. [VirtualBox](https://www.virtualbox.org/)
+1. [Vagrant](https://www.vagrantup.com/)]
+1. [Git](https://git-scm.com/downloads）
+
+## Initial setup
+1. Clone this git repo - `git clone https://github.com/serheang/lca2022-ansible.git`  
+1. Change directory into `lca2022-ansible` - `cd lca2022-ansible`  
+1. 
 
 ## More info
 Here is a placeholder for the shell scripts, ansible playbooks/roles and Vagrantfile that I used in my talk.  
