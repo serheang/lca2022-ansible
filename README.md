@@ -25,12 +25,14 @@ I want to share my ansible journey, from shell to galaxy with you.
 
 ## Prerequisite
 1. [VirtualBox](https://www.virtualbox.org/)
-1. [Vagrant](https://www.vagrantup.com/)]
+1. [Vagrant](https://www.vagrantup.com/)
 1. [Git](https://git-scm.com/downloads）
 
 ## Initial setup
 1. Clone this git repo - `git clone https://github.com/serheang/lca2022-ansible.git`  
-1. Change directory into `lca2022-ansible` - `cd lca2022-ansible`  
+1. Change directory into `vagrant` - `cd lca2022-ansible/vagrant`  
+1. Setup the necessary VMs with `vagrant` - `vagrant up`
+    > If you want to have AWX as well, the you will need to run this after the above completed - `vagrant up awx`
 1. 
 
 ## More info
