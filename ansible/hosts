@@ -1,6 +1,6 @@
-mgt
+mgt ansible_host=192.168.56.100
 
 [lamp]
-centos7
-centos7-2
-ubuntu18
+centos7 ansible_host=192.168.56.105
+centos7-2 ansible_host=192.168.56.115
+ubuntu18 ansible_host=192.168.56.106
