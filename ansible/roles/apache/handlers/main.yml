@@ -1,5 +1,5 @@
 ---
-# handlers file for lamp
+# handlers file for apache
 - name: Enable httpd
   service:
     name: httpd

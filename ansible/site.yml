@@ -14,9 +14,9 @@
       include_role:
         name: Ubuntu
 
-- name: LAMP setup
-  hosts: lamp
+- name: Apache setup
+  hosts: webservers
   tasks:
-    - name: Setup LAMP
+    - name: Setup Apache
       include_role:
-        name: lamp
+        name: apache

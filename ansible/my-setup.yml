@@ -1,8 +1,8 @@
 ---
-- hosts: lamp
+- hosts: webservers
   become: yes
   tasks:
-    - name: Install LAMP - CentOS
+    - name: Install Apache - CentOS
       when:
         - ansible_distribution == "CentOS"
       block:
@@ -21,7 +21,7 @@
             name: httpd
             enabled: yes
             state: started
-    - name: Install LAMP - Ubuntu
+    - name: Install Apache - Ubuntu
       when:
         - ansible_distribution == "Ubuntu"
       block:

@@ -1,6 +1,6 @@
 ---
-# tasks file for lamp
-- name: Install LAMP for CentOS
+# tasks file for apache
+- name: Install Apache for CentOS
   when:
     - ansible_distribution == "CentOS"
   block:
@@ -18,7 +18,7 @@
         state: present
         update_cache: yes
 
-- name: Install LAMP for Ubuntu
+- name: Install Apache for Ubuntu
   when:
     - ansible_distribution == "Ubuntu"
   block:

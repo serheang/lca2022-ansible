@@ -4,14 +4,11 @@
 ## Update apt cache
 apt -y update
 
-## Install LAMP
-apt -y install apache2 mysql-server php libapache2-mod-php php-mysql 
+## Install Apache
+apt -y install apache2 php libapache2-mod-php
 
 ## Enable and start apache2 service
 systemctl enable apache2; systemctl start apache2
-
-## Enable and start mysql service
-systemctl enable mysql
 
 ## Create a sample landing page
 cat >/var/www/html/index.html<<EOF

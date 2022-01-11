@@ -1,17 +1,11 @@
 #!/bin/bash
 ## This work for centos6
 
-## Install mysql-community repo
-rpm -ivh https://dev.mysql.com/get/mysql80-community-release-el6-4.noarch.rpm
-
-## Install LAMP
-yum -y install httpd mysql-server php php-mysql
+## Install Apache
+yum -y install httpd php
 
 ## Enable and start httpd service
 chkconfig --add httpd; service httpd restart
-
-## Enable and start mysql service
-chkconfig --add mysqld
 
 ## Create a sample landing page
 cat >/var/www/html/index.html<<EOF

@@ -14,7 +14,7 @@ For Ubuntu
 For both CentOS and Ubuntu
 1. my-setup.sh
 
-Inventory file: `lamp`  
+Inventory file: `webservers`  
 
 ## Basic instruction
 Transfer/copy the relevant script to relevant distro, or use `my-setup.sh` for setup on either CentOS or Ubuntu.
@@ -42,7 +42,7 @@ ssh centos7 'sudo bash -s' < my-setup.sh
 ```
 or
 ```
-for host in `cat lamp`; do
+for host in `cat webservers`; do
 ssh $host 'sudo bash -s' < my-setup.sh
 done
 ```

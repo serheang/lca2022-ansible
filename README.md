@@ -41,10 +41,10 @@ I want to share my ansible journey, from shell to galaxy with you.
 
 ## Bash example
 1. In **mgt**, change directory to `/srv/lca2022-ansible/bash` - `cd /srv/lca2022-ansible/bash`.
-1. You can run `my-setup.sh` onto any of hosts in file `lamp`, which is "centos7", "centos7-2" and "ubuntu18".
+1. You can run `my-setup.sh` onto any of hosts in file `webservers`, which is "centos7", "centos7-2" and "ubuntu18".
     > You can run it in this way:
 	```
-	for host in `cat lamp`; do
+	for host in `cat webservers`; do
 	ssh $host 'sudo bash -s' < my-setup.sh
 	done
 	```

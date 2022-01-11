@@ -1,4 +1,4 @@
-[lamp]
+[webservers]
 centos7 ansible_host=192.168.56.105
 centos7-2 ansible_host=192.168.56.115
 ubuntu18 ansible_host=192.168.56.106
