@@ -1,8 +1,8 @@
-lamp
+apache
 =========
 
-This is a simplified role to install LAMP stack onto CentOS or Ubuntu.  The purpose of the role is to be used in LCA2022 miniconf talk.
-This role still require steps to setup and configure mysql server and securing the apache service.
+This is a simplified role to install apache  onto CentOS or Ubuntu.  The purpose of the role is to be used in LCA2022 miniconf talk.
+This role still require steps to setup, configure and securing the apache service.
 
 Requirements
 ------------
@@ -25,7 +25,7 @@ Including an example of how to use your role (for instance, with variables passe
 
     - hosts: servers
       roles:
-         - { role: lamp }
+         - { role: apache }
 
 License
 -------

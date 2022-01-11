@@ -4,11 +4,6 @@
   when:
     - ansible_distribution == "CentOS"
   block:
-    - name: Setup mysql 8.0 community repo
-      package:
-        name: "https://dev.mysql.com/get/mysql80-community-release-el{{ ansible_distribution_major_version }}-4.noarch.rpm"
-        state: present
-        update_cache: yes
     - name: Install httpd
       package:
         name: httpd
@@ -16,18 +11,10 @@
         update_cache: yes
       notify:
         - Enable httpd
-    - name: Install mysql-server
-      package:
-        name: mysql-server
-        state: present
-        update_cache: yes
-      notify:
-        - Enable mysql in CentOS
     - name: Install relevant PHP packages
       package:
         name:
           - php
-          - php-mysql
         state: present
         update_cache: yes
 
@@ -42,19 +29,11 @@
         update_cache: yes
       notify:
         - Enable apache2
-    - name: Install mysql-server
-      package:
-        name: mysql-server
-        state: present
-        update_cache: yes
-      notify:
-        - Enable mysql in Ubuntu
     - name: Install relevant PHP packages
       package:
         name:
           - php
           - libapache2-mod-php
-          - php-mysql
         state: present
         update_cache: yes
 
