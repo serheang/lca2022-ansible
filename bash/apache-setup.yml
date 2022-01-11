@@ -1,0 +1,24 @@
+---
+- hosts: "{{ hostgrp | default('all') }}"
+  gather_facts: true
+  become: yes
+  tasks:
+    - name: Setup for CentOS
+      when:
+        - ansible_distribution == "CentOS"
+      block:
+        - name: For CentOS 6
+          when:
+            - ansible_distribution_major_version == "6"
+          script:
+            cmd: centos6-setup.sh
+        - name: For CentOS 7
+          when:
+            - ansible_distribution_major_version == "7"
+          script:
+            cmd: centos7-setup.sh
+    - name: Setup for Ubuntu
+      when:
+        - ansible_distribution == "Ubuntu"
+      script:
+        cmd: ubuntu-setup.sh
