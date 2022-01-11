@@ -6,13 +6,19 @@
     cache_valid_time: 3600
 - name: Install additional packages
   apt:
-    name: "{{ install_pkgs }}"
+    name:
+      - python3-selinux
     state: present
     update_cache: yes
     cache_valid_time: 3600
 - name: Remove unwanted packages
   apt:
-    name: "{{ remove_pkgs }}"
+    name:
+      - telnetd
+      - talkd
+      - yp-tools
+      - nis
+      - portmap
     state: absent
     autoremove: yes
     update_cache: yes
