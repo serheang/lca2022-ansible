@@ -41,26 +41,13 @@
         name: 
           - php
         state: present
-    - name: Create customize index.html
-      blockinfile:
-        path: /var/www/html/index.html
-        marker: <!-- {mark} index.html -->
-        insertbefore: BOF
-        create: yes
-        block: |
-          <html>
-          <title>Test page for LCA2022</title>
-          <body>
-          <h1>LCA2022 - Test landing page</h1>
-          <h2>{{ ansible_hostname }}</h2>
-          <p>Welcome to LCA2022!<p>
-          This is running on {{ ansible_hostname }}, OS: {{ ansible_distribution }}, Version: {{ ansible_distribution_major_version }}
-          </body>
-          </html>
-    - name: Create customize info.php
-      blockinfile:
-        path: /var/www/html/info.php
-        marker: <!-- {mark} info.php -->
-        create: yes
-        block: |
-          <?php phpinfo(); ?>
+    - name: Copy templated index.html
+      template:
+        src: templates/index.html.j2
+        dest: /var/www/html/index.html
+        mode: 0644
+    - name: Copy info.php
+      copy:
+        src: files/info.php
+        dest: /var/www/html/info.php
+        mode: 0644
