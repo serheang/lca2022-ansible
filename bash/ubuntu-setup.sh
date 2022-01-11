@@ -5,7 +5,7 @@
 apt -y update
 
 ## Install Apache
-apt -y install apache2 php libapache2-mod-php
+apt -y install apache2 php
 
 ## Enable and start apache2 service
 systemctl enable apache2; systemctl start apache2
