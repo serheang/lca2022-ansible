@@ -2,7 +2,7 @@
 - hosts: lamp
   become: yes
   tasks:
-    - name: Setup for CentOS
+    - name: Install LAMP - CentOS
       when:
         - ansible_distribution == "CentOS"
       block:
@@ -11,29 +11,6 @@
             name: epel-release
             state: present
             update_cache: yes
-        - name: Setup MySQL repo - CentOS 6
-          when:
-            - ansible_distribution_major_version == "6"
-          package:
-            name: https://dev.mysql.com/get/mysql80-community-release-el6-4.noarch.rpm
-            state: present
-        - name: Setup MySQL repo - CentOS 7
-          when:
-            - ansible_distribution_major_version == "7"
-          package:
-            name: https://dev.mysql.com/get/mysql80-community-release-el7-4.noarch.rpm
-            state: present
-    - name: Install MySQL server and PHP
-      package:
-        name: 
-          - mysql-server
-          - php
-          - php-mysql
-        state: present
-    - name: Install LAMP - CentOS
-      when:
-        - ansible_distribution == "CentOS"
-      block:
         - name: Install httpd
           package:
             name:
@@ -44,11 +21,6 @@
             name: httpd
             enabled: yes
             state: started
-        - name: Enable mysql-server
-          service:
-            name: mysqld
-            enabled: yes
-        
     - name: Install LAMP - Ubuntu
       when:
         - ansible_distribution == "Ubuntu"
@@ -64,11 +36,11 @@
             name: apache2
             enabled: yes
             state: started
-        - name: Enable and start mysql-server
-          service:
-            name: mysql
-            enabled: yes
-
+    - name: Install PHP
+      package:
+        name: 
+          - php
+        state: present
     - name: Create customize index.html
       blockinfile:
         path: /var/www/html/index.html
@@ -85,7 +57,6 @@
           This is running on {{ ansible_hostname }}, OS: {{ ansible_distribution }}, Version: {{ ansible_distribution_major_version }}
           </body>
           </html>
- 
     - name: Create customize info.php
       blockinfile:
         path: /var/www/html/info.php
