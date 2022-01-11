@@ -3,19 +3,21 @@
 - name: Update yum cache
   yum:
     update_cache: yes
-- name: Enable EPEL repo
-  yum:
-    name: epel-release
-    state: present
-    update_cache: yes
 - name: Install additional packages
   yum:
-    name: "{{ install_pkgs }}"
+    name:
+      - epel-release
+      - libselinux-python
     state: present
     update_cache: yes
 - name: Remove unwanted packages
   yum:
-    name: "{{ remove_pkgs }}"
+    name:
+      - telnet-server
+      - talk-server
+      - yp-tools
+      - ypbind
+      - ypserv
     state: absent
     autoremove: yes
     update_cache: yes
