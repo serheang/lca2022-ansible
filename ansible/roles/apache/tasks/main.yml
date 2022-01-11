@@ -3,46 +3,32 @@
 - name: Install Apache for CentOS
   when:
     - ansible_distribution == "CentOS"
-  block:
-    - name: Install httpd
-      package:
-        name: httpd
-        state: present
-        update_cache: yes
-      notify:
-        - Enable httpd
-    - name: Install relevant PHP packages
-      package:
-        name:
-          - php
-        state: present
-        update_cache: yes
-
+  yum:
+    name: httpd
+    state: present
+    update_cache: yes
+  notify:
+    - Enable httpd
 - name: Install Apache for Ubuntu
   when:
     - ansible_distribution == "Ubuntu"
-  block:
-    - name: Install apache2
-      package:
-        name: apache2
-        state: present
-        update_cache: yes
-      notify:
-        - Enable apache2
-    - name: Install relevant PHP packages
-      package:
-        name:
-          - php
-          - libapache2-mod-php
-        state: present
-        update_cache: yes
-
+  package:
+    name: apache2
+    state: present
+    update_cache: yes
+  notify:
+    - Enable apache2
+- name: Install relevant PHP packages
+  package:
+    name:
+      - php
+    state: present
+    update_cache: yes
 - name: Copy templated index.html
   template:
     src: index.html.j2
     dest: /var/www/html/index.html
     mode: 0644
-
 - name: Copy info.php
   copy:
     src: info.php
