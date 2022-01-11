@@ -12,7 +12,7 @@
 - name: Install Apache for Ubuntu
   when:
     - ansible_distribution == "Ubuntu"
-  package:
+  apt:
     name: apache2
     state: present
     update_cache: yes
