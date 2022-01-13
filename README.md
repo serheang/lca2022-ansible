@@ -5,6 +5,7 @@
 - [Abstract](#abstract)
 - [TL;DR](#tldr)
 - [Initial setup](#initial-setup)
+- [My simple ansible architecture](#my-simple-ansible-architecture)
 - [More info](#more-info)
 
 ##  Acknowledgement of the Country
@@ -38,6 +39,38 @@ I want to share my ansible journey, from shell to galaxy with you.
     > If you just run `vagrant ssh` it will by default go to **mgt**
 1. In **mgt**, first you change directory to `/srv/lca2022-ansible/` - `cd /srv/lca2022-ansible/`.
 1. Then you can either go to `bash/` (shell scripts) or `ansible/` (playbooks and roles) to run relevant tasks.
+
+## My simple ansible architecture
+I used [Mermaid](https://mermaid-js.github.io/mermaid/#/) to visualize my diagram, so this might not render correctly in github.  You might need to use [Mermaid Live Editor](https://mermaid.live/) to render the visualization.  
+```mermaid
+graph TD
+  B(["mgt (Management node)"])
+  D[centos7]
+  E[centos7-2]
+  F[centos7-3]
+  G[ubuntu18]
+  H[ubuntu20]  
+  B ---->|"ansible (ssh) "| D & E & G & F & H
+  B ==>|"self-manage (ansible) "|B
+  subgraph WEBSERVERS
+    D
+    E
+    G
+  end
+  subgraph DB
+    H
+    F
+  end
+  
+  classDef green fill:#9f6,stroke:#333,stroke-width:2px;
+  classDef orange fill:#f96,stroke:#333,stroke-width:4px;
+  classDef red fill:#f66,stroke:#336,stroke-width:4px;
+  class B green
+  class DB orange
+  class WEBSERVERS red
+```
+Here is a screen capture:
+![simple ansible architecture](https://github.com/serheang/lca2022-ansible/blob/main/my-simple-ansible-architecture.png)
 
 ## Bash example
 1. In **mgt**, change directory to `/srv/lca2022-ansible/bash` - `cd /srv/lca2022-ansible/bash`.
