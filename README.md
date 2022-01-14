@@ -25,7 +25,7 @@ And there is my journey in loving ansible:
 ![My ansible journey](https://github.com/serheang/lca2022-ansible/blob/main/MyAnsibleJourney.png)
 
 I started doing configuration manually back in 2000 – it was not fun 22 years ago, and I am confident it is not fun today. Tried using shell scripts for configuration, it was still not fun.  It got worst and complex when there are different Linux distros and other OS in your systems.  
-Then, I discovered the power of configuration tools like cfengine (2005), puppet (2013).  But I never like either 1 of them :disappointed: ...
+Then, I discovered the power of configuration tools like cfengine (2005), puppet (2013).  But I never like either 1 of them :disappointed: ...   
 Finally, in 2012, I was shine by a raising star in the galaxy - ansible!  When I first started with ansible, I only utilized the basic module: script, shell, command, but even that it gave me a lot of confidence especially I do not require to rewrite all my scripts immediately into the configuration syntax (YAML) and that gave me time to learn and change from shell script to yaml.  
   
 
@@ -60,8 +60,8 @@ This is the bare minimum for getting ansible working on management/control node:
 1. ssh connection used by ansible - either with password or ssh pubkey authentication (preferred)
 1. Admin privilege on the managed/targe node(s) - admin privilege such as `sudo` is require 
 
-> Management/control node is just any machine that we had installed ansible, where you can invoke ansible commands  to other managed/target node.  
-> Managed/target node(s) is the host that would be managed by ansible, and usually defined in an inventory (default: `/etc/ansible/hosts`).
+> **Management/control** node is just any machine that we had installed ansible, where you can invoke ansible commands  to other managed/target node.  
+> **Managed/target node(s)** is the host that would be managed by ansible, and usually defined in an inventory (default: `/etc/ansible/hosts`).
 
 ### My simple ansible architecture
 This is the ansible architecture design I used in my ansible demo.
