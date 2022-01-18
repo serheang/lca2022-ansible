@@ -43,11 +43,11 @@ Finally, in 2012, I was shine by a raising star in the galaxy - ansible!  When I
 
 ## Initial setup
 1. Clone this git repo - `git clone https://github.com/serheang/lca2022-ansible.git`  
-1. Change directory into `vagrant` - `cd lca2022-ansible/vagrant`  
-1. Setup the necessary VMs with `vagrant` - `vagrant up`
+1. Change directory into **vagrant** - `cd lca2022-ansible/vagrant`  
+1. Setup the necessary VMs with **vagrant** - `vagrant up`
     > If you want to have AWX as well, the you will need to run this after the above completed - `vagrant up awx`
 	> You should take a snapshot of the existing VMs state so that you can quicky restore if something went wrong - `vagrant snapshot save b4anything`
-1. If you have a ssh client, such as putty (Windows/Linux), you can ssh into VM **mgt**, via the IP: 192.168.56.100.  Or you can use `vagrant` - `vagrant ssh mgt`
+1. If you have a ssh client, such as putty (Windows/Linux), you can ssh into VM **mgt**, via the IP: 192.168.56.100.  Or you can use **vagrant** - `vagrant ssh mgt`
     > If you just run `vagrant ssh` it will by default go to **mgt**
 1. In **mgt**, first you change directory to `/srv/lca2022-ansible/` - `cd /srv/lca2022-ansible/`.
     > If you want to ensure all the scripts and/or ansible playbooks/roles or any info is updated, the you run `sudo git pull` first.
