@@ -8,7 +8,7 @@ on:
       - master
 
   # Do nothing on pull
-  pull_reuqest: []
+  pull_request: []
 
 jobs:
   changes:
