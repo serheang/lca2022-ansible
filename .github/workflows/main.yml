@@ -27,7 +27,7 @@ jobs:
           format: json 
           # Regex for filtering files, for example to get files of specific type.
           # optional, default is 
-          filter: "*.yml"
+          filter: "\.y*.ml$"
 
   verify_ansible:
     needs:
