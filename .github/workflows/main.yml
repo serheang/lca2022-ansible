@@ -1,0 +1,47 @@
+name: Run this on push
+on:
+  # Do something on push
+  push:
+    # Ediot the branches here
+    branches:
+      - main
+      - master
+
+  # Do nothing on pull
+  pull_reuqest: []
+
+jobs:
+  changes:
+    name: Get Git Changed YAML Files
+    runs-on: ubuntu-latest
+    outputs:
+      changed_file: ${{ steps.files.outputs.added_modified }}
+    steps:
+      - name: files
+        uses: InfraWay/get-changed-files@v2.0
+        with:
+          # GitHub token for GitHub API requests. Users shouldn't need to set this themselves.
+          token: # default is ${{ github.token }}
+          # Format of the steps output context. Can be 'space-delimited', 'csv', 'json' or 'object'.
+          # default is space-delimited
+          format: json 
+          # Regex for filtering files, for example to get files of specific type.
+          # optional, default is 
+          filter: 
+            - *.yaml
+            - *.yml
+  verify_ansible:
+    needs:
+      - changes
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ansible_version: 2.9.25
+        changed_file: ${{ fromJson(needs.changes.outputs.change_file) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install pip
+        run: sudo apt -y install python-pip
+      - name: Pip install ansible
+        run: sudo pip install -y ansible==${{ matrix.ansible_version }}
