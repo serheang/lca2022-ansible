@@ -35,9 +35,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        changed_file: ${{ fromJson(needs.changes.outputs.changed_file) }}
         ansible_version:
           - "2.9.25"
-        changed_file: ${{ fromJson(needs.changes.outputs.changed_file) }}
     name: Check ${{ matrix.changed_file }}
     steps:
       - name: Checkout
