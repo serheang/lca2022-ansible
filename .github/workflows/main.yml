@@ -37,7 +37,8 @@ jobs:
       matrix:
         ansible_version:
           - "2.9.25"
-        changed_file: ${{ fromJson(needs.changes.outputs.change_file) }}
+        changed_file: ${{ fromJson(needs.changes.outputs.changed_file) }}
+    name: Check ${{ matrix.changed_file }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
