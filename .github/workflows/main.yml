@@ -21,7 +21,7 @@ jobs:
         uses: InfraWay/get-changed-files@v2.0
         with:
           # GitHub token for GitHub API requests. Users shouldn't need to set this themselves.
-          token: # default is ${{ github.token }}
+          token: ${{ github.token }}
           # Format of the steps output context. Can be 'space-delimited', 'csv', 'json' or 'object'.
           # default is space-delimited
           format: json 
