@@ -15,14 +15,13 @@ jobs:
     name: Get Git Changed YAML Files
     runs-on: ubuntu-latest
     outputs:
-      changed_file: ${{ steps.files.outputs.added_modified }}
+      changed_file: ${{ steps.files.outputs.files_updated }}
     steps:
       - name: files
-        uses: tj-actions/changed-files@v13.1
+        uses: futuratrepadeira/changed-files@v3.1.0
         with:
-          files: |
-            *.yaml
-            *.yml
+          repo-token: ${{ github.token }}
+          pattern: '\.(yml|yaml)$'
 
   verify_ansible:
     needs:
@@ -39,6 +38,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Install pip
-        run: sudo apt -y install python-pip
+        run: sudo apt -y install python3-pip
       - name: Pip install ansible
-        run: sudo pip install -y ansible==${{ matrix.ansible_version }}
+        run: sudo pip3 install -y ansible==${{ matrix.ansible_version }}
