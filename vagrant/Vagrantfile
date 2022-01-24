@@ -121,6 +121,35 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	SHELL
   end
 
+  config.vm.define "centos8", autostart: false do |centos8|
+    centos8.vm.box = "centos/8"
+    centos8.vm.hostname = "centos8"
+    centos8.vm.network "private_network", ip: "192.168.56.119"
+	centos8.vm.provider "virtualbox" do |vb|
+	  # Customize the amount of memory on the VM:
+      vb.memory = 256
+	  # vm name
+	  vb.name = "centos8"
+	end
+	centos8.vm.provision "shell", inline: <<-SHELL
+          dnf makecache
+	SHELL
+  end
+  config.vm.define "rocky8", autostart: false do |rocky8|
+    rocky8.vm.box = "rockylinux/8"
+    rocky8.vm.hostname = "rocky8"
+    rocky8.vm.network "private_network", ip: "192.168.56.120"
+	rocky8.vm.provider "virtualbox" do |vb|
+	  # Customize the amount of memory on the VM:
+      vb.memory = 256
+	  # vm name
+	  vb.name = "rocky8"
+	end
+	rocky8.vm.provision "shell", inline: <<-SHELL
+          dnf makecache
+	SHELL
+  end
+
   config.vm.define "ubuntu20", autostart: false do |ubuntu20|
     ubuntu20.vm.box = "ubuntu/focal64"
     ubuntu20.vm.hostname = "ubuntu20"
