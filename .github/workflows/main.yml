@@ -29,7 +29,6 @@ jobs:
           # optional, default is 
           filter:
             - "*.yml"
-            - "*.yaml"
 
   verify_ansible:
     needs:
@@ -37,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ansible_version: 2.9.25
+        ansible_version: "2.9.25"
         changed_file: ${{ fromJson(needs.changes.outputs.change_file) }}
     steps:
       - name: Checkout
